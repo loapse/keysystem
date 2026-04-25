@@ -191,6 +191,23 @@
         <div class="keys-list" id="keysList"></div>
       </div>
 
+      <!-- Export -->
+      <div class="section" style="grid-column:1/-1;">
+        <div class="sec-title">Export keys.json</div>
+        <p style="font-size:12px;color:var(--muted);font-family:'Space Mono',monospace;margin-bottom:1rem;line-height:1.7;">
+          Download your current keys as <span style="color:var(--accent2);">keys.json</span> and commit it to your GitHub repo so the Roblox script can validate against it.<br>
+          Path in repo: <span style="color:var(--accent);">loapse/keysystem → keys.json</span>
+        </p>
+        <div style="display:flex;gap:.75rem;flex-wrap:wrap;align-items:center;">
+          <button class="btn btn-accent" style="max-width:200px;" onclick="exportKeys()">⬇ Download keys.json</button>
+          <button class="btn" style="max-width:200px;" onclick="previewExport()">Preview JSON</button>
+        </div>
+        <div id="exportPreview" style="display:none;margin-top:1rem;background:rgba(0,229,192,0.04);border:1px solid rgba(0,229,192,0.15);border-radius:8px;padding:12px;font-family:'Space Mono',monospace;font-size:11px;color:var(--accent2);max-height:200px;overflow-y:auto;white-space:pre;word-break:break-all;"></div>
+        <p style="font-size:11px;color:var(--muted);font-family:'Space Mono',monospace;margin-top:.75rem;">
+          // after downloading: go to github.com/loapse/keysystem → upload keys.json → commit
+        </p>
+      </div>
+
       <!-- Session -->
       <div class="section" style="grid-column:1/-1;">
         <div class="sec-title">Session</div>
@@ -334,6 +351,44 @@
     }
     function copyKey(k) { navigator.clipboard && navigator.clipboard.writeText(k); }
     document.getElementById('prefixSel').addEventListener('input', function(){ this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g,''); });
+    function buildExportJSON() {
+      var keys = loadKeys();
+      // Strip internal-only fields the Lua script doesn't need, keep what matters
+      var out = {};
+      Object.keys(keys).forEach(function(k) {
+        var v = keys[k];
+        out[k] = {
+          dur: v.dur,
+          uses: v.uses,
+          usesLeft: v.usesLeft,
+          gen: v.gen,
+          created: v.created
+        };
+      });
+      return JSON.stringify(out, null, 2);
+    }
+
+    function exportKeys() {
+      var json = buildExportJSON();
+      var blob = new Blob([json], { type: 'application/json' });
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'keys.json';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(a.href);
+    }
+
+    function previewExport() {
+      var el = document.getElementById('exportPreview');
+      if (el.style.display === 'none') {
+        el.style.display = 'block';
+        el.textContent = buildExportJSON();
+      } else {
+        el.style.display = 'none';
+      }
+    }
   </script>
 </body>
 </html>
