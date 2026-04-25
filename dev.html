@@ -305,7 +305,7 @@
   </div>
 
   <!-- DEV PANEL -->
-  <div id="devPanel">
+  <div id="devPanel" style="display:none;">
     <div class="page-header">
       <div>
         <h1>Developer Panel</h1>
@@ -404,22 +404,25 @@
 
     function showPanel() {
       document.getElementById('authGate').style.display = 'none';
-      document.getElementById('devPanel').style.display = '';
+      document.getElementById('devPanel').style.display = 'block';
       document.getElementById('sessionTime').textContent = sessionStorage.getItem('qdev_time') || '—';
-      // Alternate between dev names for fun
       document.getElementById('sessionDev').textContent = Math.random() > .5 ? 'Beko' : 'Nova';
       renderKeys();
     }
 
     function logout() {
       sessionStorage.removeItem('qdev_auth');
-      document.getElementById('authGate').style.display = '';
+      sessionStorage.removeItem('qdev_time');
+      document.getElementById('authGate').style.display = 'flex';
       document.getElementById('devPanel').style.display = 'none';
       document.getElementById('pwInput').value = '';
+      document.getElementById('authStatus').textContent = '';
     }
 
-    // Auto-login if session active
-    if (sessionStorage.getItem('qdev_auth') === '1') showPanel();
+    // Auto-login if session active — runs after DOM ready
+    document.addEventListener('DOMContentLoaded', function() {
+      if (sessionStorage.getItem('qdev_auth') === '1') showPanel();
+    });
 
     document.getElementById('pwInput').addEventListener('keydown', e => { if (e.key === 'Enter') authCheck(); });
 
@@ -538,3 +541,4 @@
   </script>
 </body>
 </html>
+
