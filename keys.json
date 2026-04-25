@@ -1,1 +1,14 @@
-2FH6-R162-RTOT-04YX
+{
+  "ABCD-1234-EFGH-5678": {
+    "dur": "lifetime",
+    "uses": -1,
+    "usesLeft": -1,
+    "created": 1700000000000
+  },
+  "TEST-AAAA-BBBB-CCCC": {
+    "dur": "7d",
+    "uses": 3,
+    "usesLeft": 3,
+    "created": 1700000000000
+  }
+}
