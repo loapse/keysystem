@@ -8,331 +8,156 @@
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #080810;
-      --surface: #0e0e1a;
-      --surface2: #12121f;
-      --border: rgba(255,255,255,0.07);
-      --border-hover: rgba(255,255,255,0.15);
-      --accent: #7C6BFF;
-      --accent2: #00E5C0;
-      --text: #f0f0f8;
-      --muted: #6b6b80;
-      --danger: #ff5566;
-      --success: #00E5C0;
-      --warning: #FFB830;
+      --bg: #080810; --surface: #0e0e1a; --surface2: #12121f;
+      --border: rgba(255,255,255,0.07); --border-h: rgba(255,255,255,0.15);
+      --accent: #7C6BFF; --accent2: #00E5C0;
+      --text: #f0f0f8; --muted: #6b6b80;
+      --danger: #ff5566; --warn: #FFB830;
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { height: 100%; background: var(--bg); color: var(--text); font-family: 'Syne', sans-serif; }
-
     body::before {
-      content: '';
-      position: fixed; inset: 0;
-      background-image:
-        linear-gradient(rgba(124,107,255,0.03) 1px, transparent 1px),
+      content: ''; position: fixed; inset: 0; pointer-events: none;
+      background-image: linear-gradient(rgba(124,107,255,0.03) 1px, transparent 1px),
         linear-gradient(90deg, rgba(124,107,255,0.03) 1px, transparent 1px);
       background-size: 40px 40px;
-      pointer-events: none;
     }
     .orb { position: fixed; border-radius: 50%; filter: blur(80px); pointer-events: none; z-index: 0; }
-    .orb-1 { width: 400px; height: 400px; background: rgba(124,107,255,0.1); top: -100px; right: -80px; }
-    .orb-2 { width: 250px; height: 250px; background: rgba(0,229,192,0.07); bottom: -50px; left: 0; }
-
-    /* TOPBAR */
+    .orb1 { width: 400px; height: 400px; background: rgba(124,107,255,0.1); top: -100px; right: -80px; }
+    .orb2 { width: 250px; height: 250px; background: rgba(0,229,192,0.07); bottom: -50px; left: 0; }
     .topbar {
-      position: fixed; top: 0; left: 0; right: 0;
+      position: fixed; top: 0; left: 0; right: 0; z-index: 10;
       display: flex; align-items: center; justify-content: space-between;
-      padding: 1rem 2rem;
-      border-bottom: 1px solid var(--border);
-      backdrop-filter: blur(12px);
-      z-index: 10;
+      padding: 1rem 2rem; border-bottom: 1px solid var(--border); backdrop-filter: blur(12px);
     }
     .logo { font-family: 'Space Mono', monospace; font-size: 13px; font-weight: 700; color: var(--accent); letter-spacing: .1em; }
     .logo span { color: var(--accent2); }
-    .badge-dev {
-      font-family: 'Space Mono', monospace; font-size: 10px;
-      background: rgba(124,107,255,0.15); color: var(--accent);
-      border: 1px solid rgba(124,107,255,0.25);
-      border-radius: 4px; padding: 3px 8px; letter-spacing: .08em;
-    }
-    .topbar-right { display: flex; align-items: center; gap: .75rem; }
-    .nav-link {
-      font-size: 12px; color: var(--muted); text-decoration: none;
-      border: 1px solid var(--border); border-radius: 6px;
-      padding: 5px 12px; transition: all .2s;
-      font-family: 'Space Mono', monospace;
-    }
-    .nav-link:hover { color: var(--text); border-color: var(--border-hover); }
+    .badge-dev { font-family: 'Space Mono', monospace; font-size: 10px; background: rgba(124,107,255,0.15); color: var(--accent); border: 1px solid rgba(124,107,255,0.25); border-radius: 4px; padding: 3px 8px; }
+    .nav-link { font-size: 12px; color: var(--muted); text-decoration: none; border: 1px solid var(--border); border-radius: 6px; padding: 5px 12px; font-family: 'Space Mono', monospace; transition: all .2s; }
+    .nav-link:hover { color: var(--text); border-color: var(--border-h); }
 
-    /* AUTH GATE */
-    #authGate {
-      position: relative; z-index: 1;
-      display: flex; align-items: center; justify-content: center;
-      min-height: 100vh; padding: 2rem;
-    }
-    .auth-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 2.5rem;
-      width: 100%; max-width: 360px;
-      position: relative; overflow: hidden;
-      animation: fadeUp .4s ease both;
-    }
-    .auth-card::before {
-      content: '';
-      position: absolute; top: 0; left: 0; right: 0; height: 1px;
-      background: linear-gradient(90deg, transparent, var(--accent), var(--accent2), transparent);
-      opacity: .5;
-    }
-    .shield-icon {
-      width: 52px; height: 52px;
-      margin: 0 auto 1.5rem;
-      background: rgba(124,107,255,0.1);
-      border: 1px solid rgba(124,107,255,0.2);
-      border-radius: 14px;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .shield-icon svg { width: 24px; height: 24px; stroke: var(--accent); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    /* AUTH */
+    #authGate { position: relative; z-index: 1; display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 2rem; }
+    .auth-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 2.5rem; width: 100%; max-width: 360px; position: relative; overflow: hidden; animation: fadeUp .4s ease both; }
+    .auth-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--accent), var(--accent2), transparent); opacity: .5; }
+    .shield { width: 52px; height: 52px; margin: 0 auto 1.5rem; background: rgba(124,107,255,0.1); border: 1px solid rgba(124,107,255,0.2); border-radius: 14px; display: flex; align-items: center; justify-content: center; }
+    .shield svg { width: 24px; height: 24px; stroke: var(--accent); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
     .auth-card h1 { font-size: 20px; font-weight: 800; text-align: center; margin-bottom: 4px; }
     .auth-sub { font-size: 12px; color: var(--muted); text-align: center; margin-bottom: 2rem; font-family: 'Space Mono', monospace; }
-    .pw-input {
-      width: 100%;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 12px 16px;
-      color: var(--text);
-      font-family: 'Space Mono', monospace;
-      font-size: 14px;
-      outline: none;
-      transition: border-color .2s;
-      margin-bottom: .75rem;
-    }
-    .pw-input:focus { border-color: rgba(124,107,255,0.5); }
     #authStatus { font-size: 12px; font-family: 'Space Mono', monospace; min-height: 16px; text-align: center; margin-bottom: .75rem; }
-    .btn {
-      width: 100%;
-      padding: 12px;
-      border-radius: 10px;
-      font-family: 'Syne', sans-serif;
-      font-size: 14px; font-weight: 600;
-      cursor: pointer;
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,0.04);
-      color: var(--text);
-      transition: all .2s;
+
+    /* SHARED INPUTS */
+    .inp {
+      display: block; width: 100%; background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+      border-radius: 8px; padding: 9px 12px; font-family: 'Space Mono', monospace; font-size: 13px;
+      color: var(--text); outline: none; transition: border-color .2s; margin-bottom: .75rem;
+      -webkit-appearance: none;
     }
-    .btn:hover { background: rgba(255,255,255,0.08); border-color: var(--border-hover); }
+    .inp:focus { border-color: rgba(124,107,255,0.4); }
+    select.inp option { background: #1a1a2e; }
+    .btn { display: block; width: 100%; padding: 11px; border-radius: 8px; font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; border: 1px solid var(--border); background: rgba(255,255,255,0.04); color: var(--text); transition: all .2s; }
+    .btn:hover { background: rgba(255,255,255,0.08); border-color: var(--border-h); }
     .btn:active { transform: scale(.98); }
     .btn-accent { background: var(--accent); border-color: var(--accent); color: #fff; }
     .btn-accent:hover { background: #8f80ff; border-color: #8f80ff; }
-    .btn-sm {
-      width: auto; padding: 7px 14px;
-      font-size: 12px; border-radius: 8px;
-    }
-    .btn-danger { background: rgba(255,85,102,0.12); border-color: rgba(255,85,102,0.3); color: var(--danger); }
+    .btn-sm { width: auto; padding: 6px 12px; font-size: 12px; border-radius: 6px; }
+    .btn-danger { background: rgba(255,85,102,0.1); border-color: rgba(255,85,102,0.3); color: var(--danger); }
     .btn-danger:hover { background: rgba(255,85,102,0.2); }
 
     /* PANEL */
-    #devPanel { display: none; position: relative; z-index: 1; padding: 6rem 2rem 4rem; }
-    .panel-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; max-width: 900px; margin: 0 auto; }
-    @media (max-width: 620px) { .panel-grid { grid-template-columns: 1fr; } }
-
-    .section {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 1.5rem;
-      position: relative; overflow: hidden;
-    }
-    .section::before {
-      content: '';
-      position: absolute; top: 0; left: 0; right: 0; height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(124,107,255,0.4), transparent);
-    }
-    .section-title {
-      font-size: 11px; font-weight: 600;
-      color: var(--muted); letter-spacing: .1em;
-      text-transform: uppercase;
-      font-family: 'Space Mono', monospace;
-      margin-bottom: 1.25rem;
-    }
-
-    /* Stats row */
-    .stats-row { display: flex; gap: 1rem; margin-bottom: 1.5rem; }
-    .stat-card {
-      flex: 1;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: .75rem 1rem;
-    }
-    .stat-label { font-size: 11px; color: var(--muted); font-family: 'Space Mono', monospace; margin-bottom: 4px; }
-    .stat-val { font-size: 24px; font-weight: 800; }
-
-    /* Generate form */
-    .field { margin-bottom: .9rem; }
-    .field-label { font-size: 11px; color: var(--muted); font-family: 'Space Mono', monospace; margin-bottom: 5px; }
-    select, .gen-input {
-      width: 100%;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 9px 12px;
-      font-family: 'Space Mono', monospace;
-      font-size: 13px;
-      color: var(--text);
-      outline: none;
-      transition: border-color .2s;
-      -webkit-appearance: none;
-    }
-    select:focus, .gen-input:focus { border-color: rgba(124,107,255,0.4); }
-    select option { background: #1a1a2e; }
-
-    /* Keys list */
-    .keys-list { display: flex; flex-direction: column; gap: 6px; max-height: 280px; overflow-y: auto; }
-    .keys-list::-webkit-scrollbar { width: 4px; }
-    .keys-list::-webkit-scrollbar-track { background: transparent; }
-    .keys-list::-webkit-scrollbar-thumb { background: var(--border-hover); border-radius: 2px; }
-    .key-row {
-      display: flex; align-items: center; gap: 8px;
-      background: rgba(255,255,255,0.02);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 8px 10px;
-      transition: border-color .2s;
-    }
-    .key-row:hover { border-color: var(--border-hover); }
-    .key-val { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--text); flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .badge {
-      font-size: 10px; font-family: 'Space Mono', monospace;
-      padding: 2px 7px; border-radius: 99px; white-space: nowrap; flex-shrink: 0;
-    }
-    .badge-lifetime { background: rgba(0,229,192,0.12); color: var(--accent2); border: 1px solid rgba(0,229,192,0.2); }
-    .badge-long     { background: rgba(255,184,48,0.12); color: var(--warning); border: 1px solid rgba(255,184,48,0.2); }
-    .badge-short    { background: rgba(124,107,255,0.12); color: var(--accent); border: 1px solid rgba(124,107,255,0.2); }
-    .badge-expired  { background: rgba(255,85,102,0.1); color: var(--danger); border: 1px solid rgba(255,85,102,0.2); }
-    .row-actions { display: flex; gap: 4px; flex-shrink: 0; }
-    .icon-btn {
-      background: none; border: none; cursor: pointer;
-      color: var(--muted); font-size: 11px; font-family: 'Space Mono', monospace;
-      padding: 2px 5px; border-radius: 4px;
-      transition: color .15s;
-    }
-    .icon-btn:hover { color: var(--text); }
-    .icon-btn.del:hover { color: var(--danger); }
-
-    /* Generated output */
-    .gen-output {
-      margin-top: 1rem;
-      background: rgba(0,229,192,0.04);
-      border: 1px solid rgba(0,229,192,0.15);
-      border-radius: 8px;
-      padding: 10px 12px;
-      font-family: 'Space Mono', monospace;
-      font-size: 11px;
-      color: var(--accent2);
-      max-height: 120px;
-      overflow-y: auto;
-      display: none;
-      word-break: break-all;
-    }
-
-    /* Session info */
-    .session-box {
-      background: rgba(255,255,255,0.02);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 1rem;
-      font-family: 'Space Mono', monospace;
-      font-size: 12px;
-      line-height: 2;
-    }
-    .session-box .row { display: flex; justify-content: space-between; }
-    .session-box .row span:first-child { color: var(--muted); }
-    .session-box .row span:last-child { color: var(--text); }
-
-    .logout-btn-wrap { margin-top: 1rem; }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(16px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    #devPanel .section { animation: fadeUp .35s ease both; }
-    #devPanel .section:nth-child(2) { animation-delay: .05s; }
-    #devPanel .section:nth-child(3) { animation-delay: .1s; }
-    #devPanel .section:nth-child(4) { animation-delay: .15s; }
-
-    .page-header { max-width: 900px; margin: 0 auto 1.5rem; display: flex; align-items: center; justify-content: space-between; }
-    .page-header h1 { font-size: 22px; font-weight: 800; }
-    .page-header p { font-size: 13px; color: var(--muted); margin-top: 2px; }
-
+    #devPanel { display: none; position: relative; z-index: 1; padding: 5.5rem 1.5rem 3rem; }
+    .panel-header { max-width: 920px; margin: 0 auto 1.25rem; display: flex; align-items: center; justify-content: space-between; }
+    .panel-header h1 { font-size: 22px; font-weight: 800; }
+    .panel-header p { font-size: 13px; color: var(--muted); margin-top: 2px; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; max-width: 920px; margin: 0 auto; }
+    @media (max-width: 640px) { .grid { grid-template-columns: 1fr; } }
+    .section { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem; position: relative; overflow: hidden; animation: fadeUp .35s ease both; }
+    .section::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(124,107,255,0.35), transparent); }
+    .sec-title { font-size: 11px; font-weight: 600; color: var(--muted); letter-spacing: .1em; text-transform: uppercase; font-family: 'Space Mono', monospace; margin-bottom: 1.1rem; display: flex; align-items: center; justify-content: space-between; }
+    .stats { display: grid; grid-template-columns: repeat(4,1fr); gap: .75rem; }
+    .stat { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 10px; padding: .75rem 1rem; }
+    .stat-l { font-size: 11px; color: var(--muted); font-family: 'Space Mono', monospace; margin-bottom: 4px; }
+    .stat-v { font-size: 24px; font-weight: 800; }
+    .field { margin-bottom: .8rem; }
+    .field-label { font-size: 11px; color: var(--muted); font-family: 'Space Mono', monospace; margin-bottom: 4px; }
+    .gen-out { display: none; margin-top: .9rem; background: rgba(0,229,192,0.04); border: 1px solid rgba(0,229,192,0.15); border-radius: 8px; padding: 10px 12px; font-family: 'Space Mono', monospace; font-size: 11px; color: var(--accent2); max-height: 110px; overflow-y: auto; word-break: break-all; white-space: pre; }
+    .keys-list { display: flex; flex-direction: column; gap: 5px; max-height: 300px; overflow-y: auto; }
+    .keys-list::-webkit-scrollbar { width: 3px; }
+    .keys-list::-webkit-scrollbar-thumb { background: var(--border-h); border-radius: 2px; }
+    .krow { display: flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 8px; padding: 7px 10px; }
+    .krow:hover { border-color: var(--border-h); }
+    .kval { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--text); flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .badge { font-size: 10px; font-family: 'Space Mono', monospace; padding: 2px 6px; border-radius: 99px; white-space: nowrap; flex-shrink: 0; }
+    .b-life { background: rgba(0,229,192,0.1); color: var(--accent2); border: 1px solid rgba(0,229,192,0.2); }
+    .b-long { background: rgba(255,184,48,0.1); color: var(--warn); border: 1px solid rgba(255,184,48,0.2); }
+    .b-short { background: rgba(124,107,255,0.1); color: var(--accent); border: 1px solid rgba(124,107,255,0.2); }
+    .b-exp { background: rgba(255,85,102,0.1); color: var(--danger); border: 1px solid rgba(255,85,102,0.2); }
+    .b-uses { background: rgba(255,255,255,0.05); color: var(--muted); border: 1px solid var(--border); }
+    .ibtn { background: none; border: none; cursor: pointer; color: var(--muted); font-size: 11px; font-family: 'Space Mono', monospace; padding: 2px 5px; border-radius: 4px; transition: color .15s; flex-shrink: 0; }
+    .ibtn:hover { color: var(--text); }
+    .ibtn.del:hover { color: var(--danger); }
     .empty { font-size: 12px; color: var(--muted); font-family: 'Space Mono', monospace; text-align: center; padding: 1.5rem 0; }
-
-    .dev-footer {
-      position: fixed; bottom: 1.5rem; right: 2rem;
-      font-family: 'Space Mono', monospace;
-      font-size: 11px; color: var(--muted);
-    }
+    .sess { background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 10px; padding: 1rem; font-family: 'Space Mono', monospace; font-size: 12px; }
+    .sess-row { display: flex; justify-content: space-between; padding: 3px 0; }
+    .sess-row span:first-child { color: var(--muted); }
+    .dev-footer { position: fixed; bottom: 1.5rem; right: 2rem; font-family: 'Space Mono', monospace; font-size: 11px; color: var(--muted); }
     .dev-footer a { color: var(--accent); text-decoration: none; }
-    .dev-footer a:hover { color: var(--accent2); }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+    .section:nth-child(2) { animation-delay: .05s; }
+    .section:nth-child(3) { animation-delay: .1s; }
+    .section:nth-child(4) { animation-delay: .15s; }
   </style>
 </head>
 <body>
-  <div class="orb orb-1"></div>
-  <div class="orb orb-2"></div>
-
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
   <div class="topbar">
     <div class="logo">QUANTUM<span>.</span></div>
-    <div class="topbar-right">
+    <div style="display:flex;align-items:center;gap:.75rem;">
       <span class="badge-dev">DEV PANEL</span>
       <a href="index.html" class="nav-link">← Back</a>
     </div>
   </div>
 
-  <!-- AUTH GATE -->
+  <!-- AUTH -->
   <div id="authGate">
     <div class="auth-card">
-      <div class="shield-icon">
+      <div class="shield">
         <svg viewBox="0 0 24 24"><path d="M12 2L3 7v6c0 5 3.6 9.7 9 11 5.4-1.3 9-6 9-11V7L12 2z"/></svg>
       </div>
       <h1>Dev Access</h1>
       <p class="auth-sub">// enter developer password</p>
-      <input class="pw-input" id="pwInput" type="password" placeholder="password" autocomplete="off"/>
+      <input class="inp" id="pwInput" type="password" placeholder="password" autocomplete="off" style="margin-bottom:.75rem;"/>
       <div id="authStatus"></div>
       <button class="btn btn-accent" onclick="authCheck()">Authenticate</button>
     </div>
   </div>
 
-  <!-- DEV PANEL -->
-  <div id="devPanel" style="display:none;">
-    <div class="page-header">
-      <div>
-        <h1>Developer Panel</h1>
-        <p>Manage keys · Generate · Monitor</p>
-      </div>
+  <!-- PANEL -->
+  <div id="devPanel">
+    <div class="panel-header">
+      <div><h1>Developer Panel</h1><p>Generate · Manage · Monitor</p></div>
       <button class="btn btn-sm btn-danger" onclick="logout()">Log out</button>
     </div>
-
-    <div class="panel-grid">
+    <div class="grid">
 
       <!-- Stats -->
-      <div class="section" style="grid-column: 1 / -1;">
-        <div class="section-title">Overview</div>
-        <div class="stats-row">
-          <div class="stat-card"><div class="stat-label">total keys</div><div class="stat-val" id="statTotal" style="color:var(--text)">0</div></div>
-          <div class="stat-card"><div class="stat-label">active</div><div class="stat-val" id="statActive" style="color:var(--accent2)">0</div></div>
-          <div class="stat-card"><div class="stat-label">expired</div><div class="stat-val" id="statExpired" style="color:var(--danger)">0</div></div>
-          <div class="stat-card"><div class="stat-label">lifetime</div><div class="stat-val" id="statLifetime" style="color:var(--accent)">0</div></div>
+      <div class="section" style="grid-column:1/-1;">
+        <div class="sec-title">Overview</div>
+        <div class="stats">
+          <div class="stat"><div class="stat-l">total keys</div><div class="stat-v" id="sTotal">0</div></div>
+          <div class="stat"><div class="stat-l">active</div><div class="stat-v" id="sActive" style="color:var(--accent2)">0</div></div>
+          <div class="stat"><div class="stat-l">expired</div><div class="stat-v" id="sExpired" style="color:var(--danger)">0</div></div>
+          <div class="stat"><div class="stat-l">lifetime</div><div class="stat-v" id="sLife" style="color:var(--accent)">0</div></div>
         </div>
       </div>
 
       <!-- Generator -->
       <div class="section">
-        <div class="section-title">Generate keys</div>
+        <div class="sec-title">Generate keys</div>
         <div class="field">
           <div class="field-label">Duration</div>
-          <select id="durSelect">
+          <select class="inp" id="durSel">
             <option value="1d">1 day</option>
             <option value="3d">3 days</option>
             <option value="7d" selected>7 days</option>
@@ -342,38 +167,39 @@
           </select>
         </div>
         <div class="field">
-          <div class="field-label">Count (max 50)</div>
-          <input class="gen-input" id="countInput" type="number" min="1" max="50" value="1"/>
+          <div class="field-label">Max uses per key  (-1 = unlimited)</div>
+          <input class="inp" id="usesSel" type="number" min="-1" value="1" placeholder="-1 for unlimited"/>
+        </div>
+        <div class="field">
+          <div class="field-label">Count (1 – 50)</div>
+          <input class="inp" id="countSel" type="number" min="1" max="50" value="1"/>
         </div>
         <div class="field">
           <div class="field-label">Prefix (optional, 4 chars)</div>
-          <input class="gen-input" id="prefixInput" type="text" maxlength="4" placeholder="e.g. VIP" style="text-transform:uppercase;"/>
+          <input class="inp" id="prefixSel" type="text" maxlength="4" placeholder="e.g. VIP" style="text-transform:uppercase;"/>
         </div>
         <button class="btn btn-accent" onclick="generateKeys()">Generate</button>
-        <div class="gen-output" id="genOutput"></div>
+        <div class="gen-out" id="genOut"></div>
       </div>
 
       <!-- Key list -->
       <div class="section">
-        <div class="section-title" style="display:flex;align-items:center;justify-content:space-between;">
-          <span>Active keys</span>
+        <div class="sec-title">
+          <span>Keys</span>
           <button class="btn btn-sm btn-danger" onclick="clearExpired()">Clear expired</button>
         </div>
         <div class="keys-list" id="keysList"></div>
       </div>
 
-      <!-- Session info -->
-      <div class="section" style="grid-column: 1 / -1;">
-        <div class="section-title">Session</div>
-        <div class="session-box">
-          <div class="row"><span>authenticated as</span><span id="sessionDev">—</span></div>
-          <div class="row"><span>session started</span><span id="sessionTime">—</span></div>
-          <div class="row"><span>script target</span><span style="color:var(--accent2);font-size:10px;">Quantum.lua @ loapse/Quantum</span></div>
-          <div class="row"><span>panel version</span><span>v1.0</span></div>
+      <!-- Session -->
+      <div class="section" style="grid-column:1/-1;">
+        <div class="sec-title">Session</div>
+        <div class="sess">
+          <div class="sess-row"><span>authenticated as</span><span id="sessWho">—</span></div>
+          <div class="sess-row"><span>session started</span><span id="sessTime">—</span></div>
+          <div class="sess-row"><span>script target</span><span style="color:var(--accent2);font-size:10px;">Quantum.lua @ loapse/Quantum</span></div>
         </div>
-        <div class="logout-btn-wrap">
-          <button class="btn" style="max-width:160px;" onclick="logout()">Log out</button>
-        </div>
+        <div style="margin-top:.75rem;"><button class="btn" style="max-width:140px;" onclick="logout()">Log out</button></div>
       </div>
 
     </div>
@@ -382,163 +208,132 @@
   <div class="dev-footer">by <a href="#">Beko</a> &amp; <a href="#">Nova</a></div>
 
   <script>
-    const PW_HASH = btoa('Quantum1234'); // obfuscated, not plain text in source
+    var PW = btoa('Quantum1234');
 
     function authCheck() {
-      const val = document.getElementById('pwInput').value;
-      const el = document.getElementById('authStatus');
-      if (btoa(val) === PW_HASH) {
-        sessionStorage.setItem('qdev_auth', '1');
-        sessionStorage.setItem('qdev_time', new Date().toLocaleTimeString());
+      var val = document.getElementById('pwInput').value;
+      var st = document.getElementById('authStatus');
+      if (btoa(val) === PW) {
+        sessionStorage.setItem('qauth','1');
+        sessionStorage.setItem('qtime', new Date().toLocaleTimeString());
         showPanel();
       } else {
-        el.style.color = 'var(--danger)';
-        el.textContent = '// access denied';
+        st.style.color = 'var(--danger)'; st.textContent = '// access denied';
         document.getElementById('pwInput').style.borderColor = 'rgba(255,85,102,0.5)';
-        setTimeout(() => {
-          el.textContent = '';
-          document.getElementById('pwInput').style.borderColor = '';
-        }, 2000);
+        setTimeout(function(){ st.textContent=''; document.getElementById('pwInput').style.borderColor=''; }, 2000);
       }
     }
-
     function showPanel() {
       document.getElementById('authGate').style.display = 'none';
       document.getElementById('devPanel').style.display = 'block';
-      document.getElementById('sessionTime').textContent = sessionStorage.getItem('qdev_time') || '—';
-      document.getElementById('sessionDev').textContent = Math.random() > .5 ? 'Beko' : 'Nova';
+      document.getElementById('sessTime').textContent = sessionStorage.getItem('qtime') || '—';
+      document.getElementById('sessWho').textContent = Math.random() > .5 ? 'Beko' : 'Nova';
       renderKeys();
     }
-
     function logout() {
-      sessionStorage.removeItem('qdev_auth');
-      sessionStorage.removeItem('qdev_time');
+      sessionStorage.removeItem('qauth');
       document.getElementById('authGate').style.display = 'flex';
       document.getElementById('devPanel').style.display = 'none';
       document.getElementById('pwInput').value = '';
       document.getElementById('authStatus').textContent = '';
     }
+    document.getElementById('pwInput').addEventListener('keydown', function(e){ if(e.key==='Enter') authCheck(); });
+    document.addEventListener('DOMContentLoaded', function(){ if(sessionStorage.getItem('qauth')==='1') showPanel(); });
 
-    // Auto-login if session active — runs after DOM ready
-    document.addEventListener('DOMContentLoaded', function() {
-      if (sessionStorage.getItem('qdev_auth') === '1') showPanel();
-    });
-
-    document.getElementById('pwInput').addEventListener('keydown', e => { if (e.key === 'Enter') authCheck(); });
-
-    // Key storage
-    function getKeys() {
-      try {
-        const raw = localStorage.getItem('quantum_keys');
-        return raw ? JSON.parse(raw) : getDefaultKeys();
-      } catch { return getDefaultKeys(); }
-    }
-    function getDefaultKeys() {
+    // Key storage — shared with index.html via localStorage key 'qkeys'
+    function defaultKeys() {
       return {
-        "ABCD-1234-EFGH-5678": { dur: "lifetime", gen: "Nova", created: Date.now() },
-        "TEST-AAAA-BBBB-CCCC": { dur: "7d", gen: "Beko", created: Date.now() }
+        "ABCD-1234-EFGH-5678": { dur:"lifetime", uses:-1, usesLeft:-1, gen:"Nova", created:Date.now() },
+        "TEST-AAAA-BBBB-CCCC": { dur:"7d", uses:3, usesLeft:3, gen:"Beko", created:Date.now() }
       };
     }
-    function saveKeys(k) { localStorage.setItem('quantum_keys', JSON.stringify(k)); }
-    if (!localStorage.getItem('quantum_keys')) saveKeys(getDefaultKeys());
-
-    function isExpired(info) {
-      if (info.dur === 'lifetime') return false;
-      const days = parseInt(info.dur);
-      if (isNaN(days)) return false;
-      return Date.now() - info.created > days * 86400000;
+    function loadKeys() {
+      try { var r = localStorage.getItem('qkeys'); return r ? JSON.parse(r) : defaultKeys(); } catch(e) { return defaultKeys(); }
     }
-    function durLabel(d) {
-      return { '1d':'1 day','3d':'3 days','7d':'7 days','30d':'30 days','90d':'90 days','lifetime':'Lifetime' }[d] || d;
+    function saveKeys(k) { try { localStorage.setItem('qkeys', JSON.stringify(k)); } catch(e){} }
+    if (!localStorage.getItem('qkeys')) saveKeys(defaultKeys());
+
+    function expired(info) {
+      if (info.dur === 'lifetime') return false;
+      var d = parseInt(info.dur);
+      return isNaN(d) ? false : Date.now() - info.created > d * 86400000;
+    }
+    function durStr(d) {
+      return { '1d':'1d','3d':'3d','7d':'7d','30d':'30d','90d':'90d','lifetime':'lifetime' }[d] || d;
     }
     function badgeClass(info) {
-      if (isExpired(info)) return 'badge-expired';
-      if (info.dur === 'lifetime') return 'badge-lifetime';
-      if (info.dur === '30d' || info.dur === '90d') return 'badge-long';
-      return 'badge-short';
+      if (expired(info)) return 'b-exp';
+      if (info.dur === 'lifetime') return 'b-life';
+      if (info.dur === '30d' || info.dur === '90d') return 'b-long';
+      return 'b-short';
     }
     function badgeText(info) {
-      if (isExpired(info)) return 'expired';
-      return durLabel(info.dur);
+      if (expired(info)) return 'expired';
+      return durStr(info.dur);
+    }
+    function usesText(info) {
+      if (info.uses === -1) return '∞';
+      return info.usesLeft + '/' + info.uses;
     }
 
     function renderKeys() {
-      const keys = getKeys();
-      const list = document.getElementById('keysList');
+      var keys = loadKeys();
+      var list = document.getElementById('keysList');
       list.innerHTML = '';
-      let total = 0, active = 0, expired = 0, lifetime = 0;
-      for (const [k, v] of Object.entries(keys)) {
-        total++;
-        if (v.dur === 'lifetime') lifetime++;
-        if (isExpired(v)) expired++; else active++;
-        const row = document.createElement('div');
-        row.className = 'key-row';
-        row.innerHTML = `
-          <span class="key-val" title="${k}">${k}</span>
-          <span class="badge ${badgeClass(v)}">${badgeText(v)}</span>
-          <div class="row-actions">
-            <button class="icon-btn" onclick="copyKey('${k}')">copy</button>
-            <button class="icon-btn del" onclick="deleteKey('${k}')">del</button>
-          </div>`;
+      var total=0, active=0, exp=0, life=0;
+      Object.keys(keys).forEach(function(k) {
+        var info = keys[k]; total++;
+        if (info.dur === 'lifetime') life++;
+        if (expired(info) || (info.uses !== -1 && info.usesLeft <= 0)) exp++; else active++;
+        var row = document.createElement('div');
+        row.className = 'krow';
+        row.innerHTML = '<span class="kval" title="'+k+'">'+k+'</span>'
+          +'<span class="badge '+badgeClass(info)+'">'+badgeText(info)+'</span>'
+          +'<span class="badge b-uses">'+usesText(info)+'</span>'
+          +'<button class="ibtn" onclick="copyKey(\''+k+'\')">copy</button>'
+          +'<button class="ibtn del" onclick="deleteKey(\''+k+'\')">del</button>';
         list.appendChild(row);
-      }
+      });
       if (total === 0) list.innerHTML = '<div class="empty">no keys yet</div>';
-      document.getElementById('statTotal').textContent = total;
-      document.getElementById('statActive').textContent = active;
-      document.getElementById('statExpired').textContent = expired;
-      document.getElementById('statLifetime').textContent = lifetime;
+      document.getElementById('sTotal').textContent = total;
+      document.getElementById('sActive').textContent = active;
+      document.getElementById('sExpired').textContent = exp;
+      document.getElementById('sLife').textContent = life;
     }
 
     function rand4() { return Math.random().toString(36).substring(2,6).toUpperCase().padEnd(4,'X'); }
-    function generateKey(prefix) {
-      const p = prefix ? prefix.toUpperCase().replace(/[^A-Z0-9]/g,'').padEnd(4,'X').substring(0,4) : rand4();
+    function makeKey(prefix) {
+      var p = prefix ? prefix.toUpperCase().replace(/[^A-Z0-9]/g,'').padEnd(4,'X').substring(0,4) : rand4();
       return [p, rand4(), rand4(), rand4()].join('-');
     }
-
     function generateKeys() {
-      const dur = document.getElementById('durSelect').value;
-      const count = Math.min(50, Math.max(1, parseInt(document.getElementById('countInput').value) || 1));
-      const prefix = document.getElementById('prefixInput').value;
-      const keys = getKeys();
-      const newKeys = [];
-      for (let i = 0; i < count; i++) {
-        let k;
-        let attempts = 0;
-        do { k = generateKey(prefix); attempts++; } while (keys[k] && attempts < 100);
-        keys[k] = { dur, gen: 'Beko', created: Date.now() };
-        newKeys.push(k);
+      var dur = document.getElementById('durSel').value;
+      var uses = parseInt(document.getElementById('usesSel').value);
+      if (isNaN(uses) || uses === 0) uses = -1;
+      var count = Math.min(50, Math.max(1, parseInt(document.getElementById('countSel').value) || 1));
+      var prefix = document.getElementById('prefixSel').value;
+      var keys = loadKeys();
+      var made = [];
+      for (var i = 0; i < count; i++) {
+        var k; var tries = 0;
+        do { k = makeKey(prefix); tries++; } while (keys[k] && tries < 200);
+        keys[k] = { dur:dur, uses:uses, usesLeft:uses, gen:'dev', created:Date.now() };
+        made.push(k);
       }
       saveKeys(keys);
       renderKeys();
-      const out = document.getElementById('genOutput');
-      out.style.display = '';
-      out.textContent = newKeys.join('\n');
+      var out = document.getElementById('genOut');
+      out.style.display = 'block';
+      out.textContent = made.join('\n');
     }
-
-    function deleteKey(k) {
-      const keys = getKeys();
-      delete keys[k];
-      saveKeys(keys);
-      renderKeys();
-    }
-
+    function deleteKey(k) { var keys = loadKeys(); delete keys[k]; saveKeys(keys); renderKeys(); }
     function clearExpired() {
-      const keys = getKeys();
-      for (const [k, v] of Object.entries(keys)) {
-        if (isExpired(v)) delete keys[k];
-      }
-      saveKeys(keys);
-      renderKeys();
+      var keys = loadKeys();
+      Object.keys(keys).forEach(function(k){ if (expired(keys[k])) delete keys[k]; });
+      saveKeys(keys); renderKeys();
     }
-
-    function copyKey(k) {
-      navigator.clipboard?.writeText(k);
-    }
-
-    document.getElementById('prefixInput').addEventListener('input', function() {
-      this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g,'');
-    });
+    function copyKey(k) { navigator.clipboard && navigator.clipboard.writeText(k); }
+    document.getElementById('prefixSel').addEventListener('input', function(){ this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g,''); });
   </script>
 </body>
 </html>
-
