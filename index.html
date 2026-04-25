@@ -222,7 +222,7 @@
         <p class="hint">No key? Contact <a href="#">Beko</a> or <a href="#">Nova</a>.</p>
       </div>
 
-      <div id="successView">
+      <div id="successView" style="display:none;">
         <div class="success-glyph">✓</div>
         <h1 style="color:var(--accent2)">Activated</h1>
         <p class="sub" style="margin-top:6px;">Your key has been accepted. Script is ready.</p>
@@ -288,7 +288,8 @@
       setTimeout(() => {
         if (isKeyValid(key)) {
           document.getElementById('loginView').style.display = 'none';
-          document.getElementById('successView').style.display = '';
+          const sv = document.getElementById('successView');
+          sv.style.display = 'block';
           const info = getKeys()[key];
           document.getElementById('activeKey').textContent = key + '  ·  ' + durLabel(info.dur);
           document.getElementById('scriptBox').textContent = SCRIPT_STR;
@@ -307,7 +308,7 @@
     }
 
     function resetView() {
-      document.getElementById('loginView').style.display = '';
+      document.getElementById('loginView').style.display = 'block';
       document.getElementById('successView').style.display = 'none';
       document.getElementById('keyInput').value = '';
       document.getElementById('submitBtn').disabled = false;
@@ -323,3 +324,4 @@
   </script>
 </body>
 </html>
+
