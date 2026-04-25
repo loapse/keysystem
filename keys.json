@@ -1,14 +1,128 @@
 {
-  "ABCD-1234-EFGH-5678": {
+  "BEKO-RI19-HGC2-4CP8": {
     "dur": "lifetime",
     "uses": -1,
     "usesLeft": -1,
-    "created": 1700000000000
+    "gen": "dev",
+    "created": 1777125052273
   },
-  "TEST-AAAA-BBBB-CCCC": {
-    "dur": "7d",
-    "uses": 3,
-    "usesLeft": 3,
-    "created": 1700000000000
+  "BEKO-4FF3-VIUK-WWV0": {
+    "dur": "lifetime",
+    "uses": -1,
+    "usesLeft": -1,
+    "gen": "dev",
+    "created": 1777125053359
+  },
+  "BEKO-RERM-981H-YF56": {
+    "dur": "lifetime",
+    "uses": -1,
+    "usesLeft": -1,
+    "gen": "dev",
+    "created": 1777125053715
+  },
+  "BEKO-SCPU-D1U9-XC7Q": {
+    "dur": "lifetime",
+    "uses": -1,
+    "usesLeft": -1,
+    "gen": "dev",
+    "created": 1777125054203
+  },
+  "BEKO-R91O-99E8-PTD9": {
+    "dur": "lifetime",
+    "uses": -1,
+    "usesLeft": -1,
+    "gen": "dev",
+    "created": 1777125054637
+  },
+  "BEKO-CKQE-K00E-IHLL": {
+    "dur": "lifetime",
+    "uses": -1,
+    "usesLeft": -1,
+    "gen": "dev",
+    "created": 1777125055085
+  },
+  "BEKO-AF09-VWIG-OH3L": {
+    "dur": "lifetime",
+    "uses": -1,
+    "usesLeft": -1,
+    "gen": "dev",
+    "created": 1777125056977
+  },
+  "BEKO-IRZ4-P6RM-PR5Q": {
+    "dur": "lifetime",
+    "uses": -1,
+    "usesLeft": -1,
+    "gen": "dev",
+    "created": 1777125057363
+  },
+  "BEKO-N1K5-P8WK-3Y96": {
+    "dur": "lifetime",
+    "uses": -1,
+    "usesLeft": -1,
+    "gen": "dev",
+    "created": 1777125057741
+  },
+  "BEKO-UL1W-960D-MZKE": {
+    "dur": "lifetime",
+    "uses": -1,
+    "usesLeft": -1,
+    "gen": "dev",
+    "created": 1777125057934
+  },
+  "BEKO-ZF03-XIGJ-682T": {
+    "dur": "lifetime",
+    "uses": -1,
+    "usesLeft": -1,
+    "gen": "dev",
+    "created": 1777125058126
+  },
+  "BEKO-6R5Z-NV87-9V07": {
+    "dur": "lifetime",
+    "uses": -1,
+    "usesLeft": -1,
+    "gen": "dev",
+    "created": 1777125058326
+  },
+  "LETI-UIZL-HXYK-X2FP": {
+    "dur": "lifetime",
+    "uses": -1,
+    "usesLeft": -1,
+    "gen": "dev",
+    "created": 1777125065254
+  },
+  "LETI-3CMQ-STP2-MPJW": {
+    "dur": "lifetime",
+    "uses": -1,
+    "usesLeft": -1,
+    "gen": "dev",
+    "created": 1777125065433
+  },
+  "LETI-CBSN-YV80-X2C9": {
+    "dur": "lifetime",
+    "uses": -1,
+    "usesLeft": -1,
+    "gen": "dev",
+    "created": 1777125065592
+  },
+  "LETI-RZEO-SO5N-IKP9": {
+    "dur": "lifetime",
+    "uses": -1,
+    "usesLeft": -1,
+    "gen": "dev",
+    "created": 1777125065755
+  },
+  "LETI-RS6X-TU0B-MXCH": {
+    "dur": "lifetime",
+    "uses": -1,
+    "usesLeft": -1,
+    "gen": "dev",
+    "created": 1777125065908
+  },
+  "LETI-TZ2Y-ACII-I8BF": {
+    "dur": "lifetime",
+    "uses": -1,
+    "usesLeft": -1,
+    "gen": "dev",
+    "created": 1777125066025
   }
 }
