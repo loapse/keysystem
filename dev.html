@@ -7,105 +7,145 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --bg: #080810; --surface: #0e0e1a; --surface2: #12121f;
-      --border: rgba(255,255,255,0.07); --border-h: rgba(255,255,255,0.15);
-      --accent: #7C6BFF; --accent2: #00E5C0;
-      --text: #f0f0f8; --muted: #6b6b80;
-      --danger: #ff5566; --warn: #FFB830;
+    :root{
+      --bg:#080810;--surface:#0e0e1a;--surface2:#12121f;
+      --border:rgba(255,255,255,0.07);--border-h:rgba(255,255,255,0.15);
+      --accent:#7C6BFF;--accent2:#00E5C0;--text:#f0f0f8;--muted:#6b6b80;
+      --danger:#ff5566;--warn:#FFB830;
     }
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { height: 100%; background: var(--bg); color: var(--text); font-family: 'Syne', sans-serif; }
-    body::before {
-      content: ''; position: fixed; inset: 0; pointer-events: none;
-      background-image: linear-gradient(rgba(124,107,255,0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(124,107,255,0.03) 1px, transparent 1px);
-      background-size: 40px 40px;
-    }
-    .orb { position: fixed; border-radius: 50%; filter: blur(80px); pointer-events: none; z-index: 0; }
-    .orb1 { width: 400px; height: 400px; background: rgba(124,107,255,0.1); top: -100px; right: -80px; }
-    .orb2 { width: 250px; height: 250px; background: rgba(0,229,192,0.07); bottom: -50px; left: 0; }
-    .topbar {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 10;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 1rem 2rem; border-bottom: 1px solid var(--border); backdrop-filter: blur(12px);
-    }
-    .logo { font-family: 'Space Mono', monospace; font-size: 13px; font-weight: 700; color: var(--accent); letter-spacing: .1em; }
-    .logo span { color: var(--accent2); }
-    .badge-dev { font-family: 'Space Mono', monospace; font-size: 10px; background: rgba(124,107,255,0.15); color: var(--accent); border: 1px solid rgba(124,107,255,0.25); border-radius: 4px; padding: 3px 8px; }
-    .nav-link { font-size: 12px; color: var(--muted); text-decoration: none; border: 1px solid var(--border); border-radius: 6px; padding: 5px 12px; font-family: 'Space Mono', monospace; transition: all .2s; }
-    .nav-link:hover { color: var(--text); border-color: var(--border-h); }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;}
+    body::before{content:'';position:fixed;inset:0;pointer-events:none;
+      background-image:linear-gradient(rgba(124,107,255,0.03) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(124,107,255,0.03) 1px,transparent 1px);background-size:40px 40px;}
+    .orb{position:fixed;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0;}
+    .orb1{width:400px;height:400px;background:rgba(124,107,255,0.1);top:-100px;right:-80px;}
+    .orb2{width:250px;height:250px;background:rgba(0,229,192,0.07);bottom:-50px;left:0;}
+    .topbar{position:fixed;top:0;left:0;right:0;z-index:10;display:flex;align-items:center;
+      justify-content:space-between;padding:1rem 2rem;border-bottom:1px solid var(--border);backdrop-filter:blur(12px);}
+    .logo{font-family:'Space Mono',monospace;font-size:13px;font-weight:700;color:var(--accent);letter-spacing:.1em;}
+    .logo span{color:var(--accent2);}
+    .badge-dev{font-family:'Space Mono',monospace;font-size:10px;background:rgba(124,107,255,0.15);
+      color:var(--accent);border:1px solid rgba(124,107,255,0.25);border-radius:4px;padding:3px 8px;}
+    .nav-link{font-size:12px;color:var(--muted);text-decoration:none;border:1px solid var(--border);
+      border-radius:6px;padding:5px 12px;font-family:'Space Mono',monospace;transition:all .2s;}
+    .nav-link:hover{color:var(--text);border-color:var(--border-h);}
 
     /* AUTH */
-    #authGate { position: relative; z-index: 1; display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 2rem; }
-    .auth-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 2.5rem; width: 100%; max-width: 360px; position: relative; overflow: hidden; animation: fadeUp .4s ease both; }
-    .auth-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--accent), var(--accent2), transparent); opacity: .5; }
-    .shield { width: 52px; height: 52px; margin: 0 auto 1.5rem; background: rgba(124,107,255,0.1); border: 1px solid rgba(124,107,255,0.2); border-radius: 14px; display: flex; align-items: center; justify-content: center; }
-    .shield svg { width: 24px; height: 24px; stroke: var(--accent); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-    .auth-card h1 { font-size: 20px; font-weight: 800; text-align: center; margin-bottom: 4px; }
-    .auth-sub { font-size: 12px; color: var(--muted); text-align: center; margin-bottom: 2rem; font-family: 'Space Mono', monospace; }
-    #authStatus { font-size: 12px; font-family: 'Space Mono', monospace; min-height: 16px; text-align: center; margin-bottom: .75rem; }
+    #authGate{position:relative;z-index:1;display:flex;align-items:center;justify-content:center;min-height:100vh;padding:2rem;}
+    .auth-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:2.5rem;
+      width:100%;max-width:360px;position:relative;overflow:hidden;animation:fadeUp .4s ease both;}
+    .auth-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
+      background:linear-gradient(90deg,transparent,var(--accent),var(--accent2),transparent);opacity:.5;}
+    .shield{width:52px;height:52px;margin:0 auto 1.5rem;background:rgba(124,107,255,0.1);
+      border:1px solid rgba(124,107,255,0.2);border-radius:14px;display:flex;align-items:center;justify-content:center;}
+    .shield svg{width:24px;height:24px;stroke:var(--accent);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+    .auth-card h1{font-size:20px;font-weight:800;text-align:center;margin-bottom:4px;}
+    .auth-sub{font-size:12px;color:var(--muted);text-align:center;margin-bottom:2rem;font-family:'Space Mono',monospace;}
+    #authStatus{font-size:12px;font-family:'Space Mono',monospace;min-height:16px;text-align:center;margin-bottom:.75rem;}
 
-    /* SHARED INPUTS */
-    .inp {
-      display: block; width: 100%; background: rgba(255,255,255,0.03); border: 1px solid var(--border);
-      border-radius: 8px; padding: 9px 12px; font-family: 'Space Mono', monospace; font-size: 13px;
-      color: var(--text); outline: none; transition: border-color .2s; margin-bottom: .75rem;
-      -webkit-appearance: none;
-    }
-    .inp:focus { border-color: rgba(124,107,255,0.4); }
-    select.inp option { background: #1a1a2e; }
-    .btn { display: block; width: 100%; padding: 11px; border-radius: 8px; font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; border: 1px solid var(--border); background: rgba(255,255,255,0.04); color: var(--text); transition: all .2s; }
-    .btn:hover { background: rgba(255,255,255,0.08); border-color: var(--border-h); }
-    .btn:active { transform: scale(.98); }
-    .btn-accent { background: var(--accent); border-color: var(--accent); color: #fff; }
-    .btn-accent:hover { background: #8f80ff; border-color: #8f80ff; }
-    .btn-sm { width: auto; padding: 6px 12px; font-size: 12px; border-radius: 6px; }
-    .btn-danger { background: rgba(255,85,102,0.1); border-color: rgba(255,85,102,0.3); color: var(--danger); }
-    .btn-danger:hover { background: rgba(255,85,102,0.2); }
+    .inp{display:block;width:100%;background:rgba(255,255,255,0.03);border:1px solid var(--border);
+      border-radius:8px;padding:9px 12px;font-family:'Space Mono',monospace;font-size:13px;color:var(--text);
+      outline:none;transition:border-color .2s;margin-bottom:.75rem;-webkit-appearance:none;}
+    .inp:focus{border-color:rgba(124,107,255,0.4);}
+    select.inp option{background:#1a1a2e;}
+    .btn{display:block;width:100%;padding:11px;border-radius:8px;font-family:'Syne',sans-serif;
+      font-size:14px;font-weight:600;cursor:pointer;border:1px solid var(--border);
+      background:rgba(255,255,255,0.04);color:var(--text);transition:all .2s;}
+    .btn:hover{background:rgba(255,255,255,0.08);border-color:var(--border-h);}
+    .btn:active{transform:scale(.98);}
+    .btn-accent{background:var(--accent);border-color:var(--accent);color:#fff;}
+    .btn-accent:hover{background:#8f80ff;border-color:#8f80ff;}
+    .btn-sm{width:auto;padding:6px 12px;font-size:12px;border-radius:6px;}
+    .btn-danger{background:rgba(255,85,102,0.1);border-color:rgba(255,85,102,0.3);color:var(--danger);}
+    .btn-danger:hover{background:rgba(255,85,102,0.2);}
+    .btn-green{background:rgba(0,229,192,0.1);border-color:rgba(0,229,192,0.3);color:var(--accent2);}
+    .btn-green:hover{background:rgba(0,229,192,0.2);}
 
     /* PANEL */
-    #devPanel { display: none; position: relative; z-index: 1; padding: 5.5rem 1.5rem 3rem; }
-    .panel-header { max-width: 920px; margin: 0 auto 1.25rem; display: flex; align-items: center; justify-content: space-between; }
-    .panel-header h1 { font-size: 22px; font-weight: 800; }
-    .panel-header p { font-size: 13px; color: var(--muted); margin-top: 2px; }
-    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; max-width: 920px; margin: 0 auto; }
-    @media (max-width: 640px) { .grid { grid-template-columns: 1fr; } }
-    .section { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem; position: relative; overflow: hidden; animation: fadeUp .35s ease both; }
-    .section::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(124,107,255,0.35), transparent); }
-    .sec-title { font-size: 11px; font-weight: 600; color: var(--muted); letter-spacing: .1em; text-transform: uppercase; font-family: 'Space Mono', monospace; margin-bottom: 1.1rem; display: flex; align-items: center; justify-content: space-between; }
-    .stats { display: grid; grid-template-columns: repeat(4,1fr); gap: .75rem; }
-    .stat { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 10px; padding: .75rem 1rem; }
-    .stat-l { font-size: 11px; color: var(--muted); font-family: 'Space Mono', monospace; margin-bottom: 4px; }
-    .stat-v { font-size: 24px; font-weight: 800; }
-    .field { margin-bottom: .8rem; }
-    .field-label { font-size: 11px; color: var(--muted); font-family: 'Space Mono', monospace; margin-bottom: 4px; }
-    .gen-out { display: none; margin-top: .9rem; background: rgba(0,229,192,0.04); border: 1px solid rgba(0,229,192,0.15); border-radius: 8px; padding: 10px 12px; font-family: 'Space Mono', monospace; font-size: 11px; color: var(--accent2); max-height: 110px; overflow-y: auto; word-break: break-all; white-space: pre; }
-    .keys-list { display: flex; flex-direction: column; gap: 5px; max-height: 300px; overflow-y: auto; }
-    .keys-list::-webkit-scrollbar { width: 3px; }
-    .keys-list::-webkit-scrollbar-thumb { background: var(--border-h); border-radius: 2px; }
-    .krow { display: flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 8px; padding: 7px 10px; }
-    .krow:hover { border-color: var(--border-h); }
-    .kval { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--text); flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .badge { font-size: 10px; font-family: 'Space Mono', monospace; padding: 2px 6px; border-radius: 99px; white-space: nowrap; flex-shrink: 0; }
-    .b-life { background: rgba(0,229,192,0.1); color: var(--accent2); border: 1px solid rgba(0,229,192,0.2); }
-    .b-long { background: rgba(255,184,48,0.1); color: var(--warn); border: 1px solid rgba(255,184,48,0.2); }
-    .b-short { background: rgba(124,107,255,0.1); color: var(--accent); border: 1px solid rgba(124,107,255,0.2); }
-    .b-exp { background: rgba(255,85,102,0.1); color: var(--danger); border: 1px solid rgba(255,85,102,0.2); }
-    .b-uses { background: rgba(255,255,255,0.05); color: var(--muted); border: 1px solid var(--border); }
-    .ibtn { background: none; border: none; cursor: pointer; color: var(--muted); font-size: 11px; font-family: 'Space Mono', monospace; padding: 2px 5px; border-radius: 4px; transition: color .15s; flex-shrink: 0; }
-    .ibtn:hover { color: var(--text); }
-    .ibtn.del:hover { color: var(--danger); }
-    .empty { font-size: 12px; color: var(--muted); font-family: 'Space Mono', monospace; text-align: center; padding: 1.5rem 0; }
-    .sess { background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 10px; padding: 1rem; font-family: 'Space Mono', monospace; font-size: 12px; }
-    .sess-row { display: flex; justify-content: space-between; padding: 3px 0; }
-    .sess-row span:first-child { color: var(--muted); }
-    .dev-footer { position: fixed; bottom: 1.5rem; right: 2rem; font-family: 'Space Mono', monospace; font-size: 11px; color: var(--muted); }
-    .dev-footer a { color: var(--accent); text-decoration: none; }
-    @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
-    .section:nth-child(2) { animation-delay: .05s; }
-    .section:nth-child(3) { animation-delay: .1s; }
-    .section:nth-child(4) { animation-delay: .15s; }
+    #devPanel{display:none;position:relative;z-index:1;padding:5.5rem 1.5rem 4rem;}
+    .panel-header{max-width:980px;margin:0 auto 1.25rem;display:flex;align-items:center;justify-content:space-between;}
+    .panel-header h1{font-size:22px;font-weight:800;}
+    .panel-header p{font-size:13px;color:var(--muted);margin-top:2px;}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;max-width:980px;margin:0 auto;}
+    @media(max-width:680px){.grid{grid-template-columns:1fr;}}
+    .section{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:1.5rem;
+      position:relative;overflow:hidden;animation:fadeUp .35s ease both;}
+    .section::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
+      background:linear-gradient(90deg,transparent,rgba(124,107,255,0.35),transparent);}
+    .sec-title{font-size:11px;font-weight:600;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;
+      font-family:'Space Mono',monospace;margin-bottom:1.1rem;display:flex;align-items:center;justify-content:space-between;}
+    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:.75rem;}
+    @media(max-width:500px){.stats{grid-template-columns:repeat(2,1fr);}}
+    .stat{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:10px;padding:.75rem 1rem;}
+    .stat-l{font-size:11px;color:var(--muted);font-family:'Space Mono',monospace;margin-bottom:4px;}
+    .stat-v{font-size:24px;font-weight:800;}
+    .field{margin-bottom:.8rem;}
+    .field-label{font-size:11px;color:var(--muted);font-family:'Space Mono',monospace;margin-bottom:4px;}
+    .gen-out{display:none;margin-top:.9rem;background:rgba(0,229,192,0.04);border:1px solid rgba(0,229,192,0.15);
+      border-radius:8px;padding:10px 12px;font-family:'Space Mono',monospace;font-size:11px;color:var(--accent2);
+      max-height:110px;overflow-y:auto;word-break:break-all;white-space:pre;}
+
+    /* KEY LIST */
+    .search-bar{display:flex;gap:6px;margin-bottom:.75rem;}
+    .search-bar input{flex:1;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:8px;
+      padding:7px 10px;font-family:'Space Mono',monospace;font-size:12px;color:var(--text);outline:none;}
+    .search-bar input:focus{border-color:rgba(124,107,255,0.4);}
+    .bulk-bar{display:flex;gap:6px;margin-bottom:.75rem;flex-wrap:wrap;}
+    .keys-list{display:flex;flex-direction:column;gap:5px;max-height:320px;overflow-y:auto;}
+    .keys-list::-webkit-scrollbar{width:3px;}
+    .keys-list::-webkit-scrollbar-thumb{background:var(--border-h);border-radius:2px;}
+    .krow{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,0.02);
+      border:1px solid var(--border);border-radius:8px;padding:7px 10px;cursor:default;}
+    .krow:hover{border-color:var(--border-h);}
+    .krow.selected{border-color:rgba(124,107,255,0.5);background:rgba(124,107,255,0.06);}
+    .kchk{width:13px;height:13px;accent-color:var(--accent);flex-shrink:0;cursor:pointer;}
+    .kval{font-family:'Space Mono',monospace;font-size:11px;color:var(--text);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+    .knote{font-size:10px;color:var(--muted);font-family:'Space Mono',monospace;max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex-shrink:0;}
+    .badge{font-size:10px;font-family:'Space Mono',monospace;padding:2px 6px;border-radius:99px;white-space:nowrap;flex-shrink:0;}
+    .b-life{background:rgba(0,229,192,0.1);color:var(--accent2);border:1px solid rgba(0,229,192,0.2);}
+    .b-long{background:rgba(255,184,48,0.1);color:var(--warn);border:1px solid rgba(255,184,48,0.2);}
+    .b-short{background:rgba(124,107,255,0.1);color:var(--accent);border:1px solid rgba(124,107,255,0.2);}
+    .b-exp{background:rgba(255,85,102,0.1);color:var(--danger);border:1px solid rgba(255,85,102,0.2);}
+    .b-uses{background:rgba(255,255,255,0.05);color:var(--muted);border:1px solid var(--border);}
+    .ibtn{background:none;border:none;cursor:pointer;color:var(--muted);font-size:11px;
+      font-family:'Space Mono',monospace;padding:2px 5px;border-radius:4px;transition:color .15s;flex-shrink:0;}
+    .ibtn:hover{color:var(--text);}
+    .ibtn.del:hover{color:var(--danger);}
+    .ibtn.rst:hover{color:var(--warn);}
+    .empty{font-size:12px;color:var(--muted);font-family:'Space Mono',monospace;text-align:center;padding:1.5rem 0;}
+
+    /* note modal */
+    .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:100;
+      align-items:center;justify-content:center;}
+    .modal-bg.open{display:flex;}
+    .modal{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.5rem;
+      width:100%;max-width:360px;position:relative;}
+    .modal h3{font-size:15px;font-weight:700;margin-bottom:1rem;}
+    .modal-btns{display:flex;gap:.5rem;margin-top:.75rem;}
+
+    /* export */
+    .export-preview{display:none;margin-top:1rem;background:rgba(0,229,192,0.04);border:1px solid rgba(0,229,192,0.15);
+      border-radius:8px;padding:12px;font-family:'Space Mono',monospace;font-size:11px;color:var(--accent2);
+      max-height:200px;overflow-y:auto;white-space:pre;word-break:break-all;}
+    .export-step{font-size:11px;color:var(--muted);font-family:'Space Mono',monospace;line-height:1.8;margin-bottom:1rem;}
+    .export-step span{color:var(--accent2);}
+    .btn-row{display:flex;gap:.5rem;flex-wrap:wrap;}
+
+    /* webhook config */
+    .sess{background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:10px;padding:1rem;
+      font-family:'Space Mono',monospace;font-size:12px;}
+    .sess-row{display:flex;justify-content:space-between;padding:3px 0;}
+    .sess-row span:first-child{color:var(--muted);}
+
+    .dev-footer{position:fixed;bottom:1.5rem;right:2rem;font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);}
+    .dev-footer a{color:var(--accent);text-decoration:none;}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+    .section:nth-child(2){animation-delay:.05s;}
+    .section:nth-child(3){animation-delay:.1s;}
+    .section:nth-child(4){animation-delay:.15s;}
+    .section:nth-child(5){animation-delay:.2s;}
+    .section:nth-child(6){animation-delay:.25s;}
   </style>
 </head>
 <body>
@@ -119,7 +159,7 @@
     </div>
   </div>
 
-  <!-- AUTH -->
+  <!-- AUTH GATE -->
   <div id="authGate">
     <div class="auth-card">
       <div class="shield">
@@ -127,32 +167,45 @@
       </div>
       <h1>Dev Access</h1>
       <p class="auth-sub">// enter developer password</p>
-      <input class="inp" id="pwInput" type="password" placeholder="password" autocomplete="off" style="margin-bottom:.75rem;"/>
+      <input class="inp" id="pwInput" type="password" placeholder="password" autocomplete="off"/>
       <div id="authStatus"></div>
       <button class="btn btn-accent" onclick="authCheck()">Authenticate</button>
     </div>
   </div>
 
-  <!-- PANEL -->
+  <!-- NOTE MODAL -->
+  <div class="modal-bg" id="noteModal">
+    <div class="modal">
+      <h3>Edit note</h3>
+      <p style="font-size:12px;color:var(--muted);font-family:'Space Mono',monospace;margin-bottom:.75rem;" id="noteKeyLabel"></p>
+      <input class="inp" id="noteInput" type="text" placeholder="e.g. sold to @user for $5" maxlength="60"/>
+      <div class="modal-btns">
+        <button class="btn btn-accent btn-sm" onclick="saveNote()">Save</button>
+        <button class="btn btn-sm" onclick="closeNoteModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DEV PANEL -->
   <div id="devPanel">
     <div class="panel-header">
-      <div><h1>Developer Panel</h1><p>Generate · Manage · Monitor</p></div>
+      <div><h1>Developer Panel</h1><p>Generate · Manage · Export · Monitor</p></div>
       <button class="btn btn-sm btn-danger" onclick="logout()">Log out</button>
     </div>
     <div class="grid">
 
-      <!-- Stats -->
+      <!-- STATS -->
       <div class="section" style="grid-column:1/-1;">
         <div class="sec-title">Overview</div>
         <div class="stats">
           <div class="stat"><div class="stat-l">total keys</div><div class="stat-v" id="sTotal">0</div></div>
           <div class="stat"><div class="stat-l">active</div><div class="stat-v" id="sActive" style="color:var(--accent2)">0</div></div>
-          <div class="stat"><div class="stat-l">expired</div><div class="stat-v" id="sExpired" style="color:var(--danger)">0</div></div>
+          <div class="stat"><div class="stat-l">expired/used</div><div class="stat-v" id="sExpired" style="color:var(--danger)">0</div></div>
           <div class="stat"><div class="stat-l">lifetime</div><div class="stat-v" id="sLife" style="color:var(--accent)">0</div></div>
         </div>
       </div>
 
-      <!-- Generator -->
+      <!-- GENERATOR -->
       <div class="section">
         <div class="sec-title">Generate keys</div>
         <div class="field">
@@ -168,55 +221,87 @@
         </div>
         <div class="field">
           <div class="field-label">Max uses per key  (-1 = unlimited)</div>
-          <input class="inp" id="usesSel" type="number" min="-1" value="1" placeholder="-1 for unlimited"/>
+          <input class="inp" id="usesSel" type="number" min="-1" value="-1"/>
         </div>
         <div class="field">
-          <div class="field-label">Count (1 – 50)</div>
+          <div class="field-label">Count (1–50)</div>
           <input class="inp" id="countSel" type="number" min="1" max="50" value="1"/>
         </div>
         <div class="field">
           <div class="field-label">Prefix (optional, 4 chars)</div>
           <input class="inp" id="prefixSel" type="text" maxlength="4" placeholder="e.g. VIP" style="text-transform:uppercase;"/>
         </div>
+        <div class="field">
+          <div class="field-label">Note (optional — who you sold it to)</div>
+          <input class="inp" id="noteSel" type="text" maxlength="60" placeholder="e.g. sold to @user"/>
+        </div>
         <button class="btn btn-accent" onclick="generateKeys()">Generate</button>
         <div class="gen-out" id="genOut"></div>
       </div>
 
-      <!-- Key list -->
+      <!-- KEY LIST -->
       <div class="section">
         <div class="sec-title">
-          <span>Keys</span>
+          <span>Keys <span id="keyCountLabel" style="color:var(--muted);font-weight:400;"></span></span>
           <button class="btn btn-sm btn-danger" onclick="clearExpired()">Clear expired</button>
+        </div>
+        <div class="search-bar">
+          <input type="text" id="searchInp" placeholder="search keys, notes..." oninput="renderKeys()"/>
+        </div>
+        <div class="bulk-bar">
+          <button class="btn btn-sm" onclick="selectAll()">Select all</button>
+          <button class="btn btn-sm btn-danger" onclick="bulkDelete()">Delete selected</button>
+          <button class="btn btn-sm btn-green" onclick="bulkResetHwid()">Reset HWID selected</button>
         </div>
         <div class="keys-list" id="keysList"></div>
       </div>
 
-      <!-- Export -->
+      <!-- EXPORT -->
       <div class="section" style="grid-column:1/-1;">
         <div class="sec-title">Export keys.json</div>
-        <p style="font-size:12px;color:var(--muted);font-family:'Space Mono',monospace;margin-bottom:1rem;line-height:1.7;">
-          Download your current keys as <span style="color:var(--accent2);">keys.json</span> and commit it to your GitHub repo so the Roblox script can validate against it.<br>
-          Path in repo: <span style="color:var(--accent);">loapse/keysystem → keys.json</span>
+        <p class="export-step">
+          1. Click <span>Download keys.json</span><br>
+          2. Go to <span>github.com/loapse/keysystem</span><br>
+          3. Upload the file → commit → wait ~30s<br>
+          4. Roblox script will validate against new keys ✓
         </p>
-        <div style="display:flex;gap:.75rem;flex-wrap:wrap;align-items:center;">
-          <button class="btn btn-accent" style="max-width:200px;" onclick="exportKeys()">⬇ Download keys.json</button>
-          <button class="btn" style="max-width:200px;" onclick="previewExport()">Preview JSON</button>
+        <div class="btn-row">
+          <button class="btn btn-accent" style="max-width:220px;" onclick="exportKeys()">⬇ Download keys.json</button>
+          <button class="btn" style="max-width:180px;" onclick="previewExport()">Preview JSON</button>
         </div>
-        <div id="exportPreview" style="display:none;margin-top:1rem;background:rgba(0,229,192,0.04);border:1px solid rgba(0,229,192,0.15);border-radius:8px;padding:12px;font-family:'Space Mono',monospace;font-size:11px;color:var(--accent2);max-height:200px;overflow-y:auto;white-space:pre;word-break:break-all;"></div>
-        <p style="font-size:11px;color:var(--muted);font-family:'Space Mono',monospace;margin-top:.75rem;">
-          // after downloading: go to github.com/loapse/keysystem → upload keys.json → commit
-        </p>
+        <div class="export-preview" id="exportPreview"></div>
       </div>
 
-      <!-- Session -->
-      <div class="section" style="grid-column:1/-1;">
+      <!-- WEBHOOK CONFIG -->
+      <div class="section">
+        <div class="sec-title">Discord Webhook</div>
+        <p style="font-size:12px;color:var(--muted);font-family:'Space Mono',monospace;margin-bottom:.75rem;line-height:1.7;">
+          Paste your Discord webhook URL to get notified on every key activation attempt.
+        </p>
+        <div class="field">
+          <div class="field-label">Webhook URL</div>
+          <input class="inp" id="webhookInp" type="text" placeholder="https://discord.com/api/webhooks/..."/>
+        </div>
+        <div style="display:flex;gap:.5rem;">
+          <button class="btn btn-accent btn-sm" onclick="saveWebhook()">Save</button>
+          <button class="btn btn-sm" onclick="testWebhook()">Test</button>
+          <button class="btn btn-sm btn-danger" onclick="clearWebhook()">Clear</button>
+        </div>
+        <p style="font-size:11px;color:var(--muted);font-family:'Space Mono',monospace;margin-top:.75rem;" id="webhookStatus"></p>
+      </div>
+
+      <!-- SESSION -->
+      <div class="section">
         <div class="sec-title">Session</div>
         <div class="sess">
           <div class="sess-row"><span>authenticated as</span><span id="sessWho">—</span></div>
           <div class="sess-row"><span>session started</span><span id="sessTime">—</span></div>
-          <div class="sess-row"><span>script target</span><span style="color:var(--accent2);font-size:10px;">Quantum.lua @ loapse/Quantum</span></div>
+          <div class="sess-row"><span>auto-expire cleanup</span><span style="color:var(--accent2);">on load</span></div>
+          <div class="sess-row"><span>script target</span><span style="color:var(--accent2);font-size:10px;">quantumkee.lua @ loapse</span></div>
         </div>
-        <div style="margin-top:.75rem;"><button class="btn" style="max-width:140px;" onclick="logout()">Log out</button></div>
+        <div style="margin-top:.75rem;">
+          <button class="btn" style="max-width:140px;" onclick="logout()">Log out</button>
+        </div>
       </div>
 
     </div>
@@ -245,6 +330,11 @@
       document.getElementById('devPanel').style.display = 'block';
       document.getElementById('sessTime').textContent = sessionStorage.getItem('qtime') || '—';
       document.getElementById('sessWho').textContent = Math.random() > .5 ? 'Beko' : 'Nova';
+      // load saved webhook
+      var wh = localStorage.getItem('q_webhook') || '';
+      document.getElementById('webhookInp').value = wh;
+      if (wh) document.getElementById('webhookStatus').textContent = '// webhook active';
+      autoCleanup();
       renderKeys();
     }
     function logout() {
@@ -257,11 +347,11 @@
     document.getElementById('pwInput').addEventListener('keydown', function(e){ if(e.key==='Enter') authCheck(); });
     document.addEventListener('DOMContentLoaded', function(){ if(sessionStorage.getItem('qauth')==='1') showPanel(); });
 
-    // Key storage — shared with index.html via localStorage key 'qkeys'
+    // ── KEY STORE ──
     function defaultKeys() {
       return {
-        "ABCD-1234-EFGH-5678": { dur:"lifetime", uses:-1, usesLeft:-1, gen:"Nova", created:Date.now() },
-        "TEST-AAAA-BBBB-CCCC": { dur:"7d", uses:3, usesLeft:3, gen:"Beko", created:Date.now() }
+        'ABCD-1234-EFGH-5678': {dur:'lifetime',uses:-1,usesLeft:-1,gen:'Nova',created:Date.now(),hwid:null,note:'default key'},
+        'TEST-AAAA-BBBB-CCCC': {dur:'7d',uses:3,usesLeft:3,gen:'Beko',created:Date.now(),hwid:null,note:'test key'}
       };
     }
     function loadKeys() {
@@ -275,49 +365,136 @@
       var d = parseInt(info.dur);
       return isNaN(d) ? false : Date.now() - info.created > d * 86400000;
     }
+    function isUsedUp(info) { return info.uses !== -1 && info.usesLeft <= 0; }
+    function isDead(info) { return expired(info) || isUsedUp(info); }
+
     function durStr(d) {
-      return { '1d':'1d','3d':'3d','7d':'7d','30d':'30d','90d':'90d','lifetime':'lifetime' }[d] || d;
+      return {'1d':'1d','3d':'3d','7d':'7d','30d':'30d','90d':'90d','lifetime':'lifetime'}[d] || d;
     }
     function badgeClass(info) {
-      if (expired(info)) return 'b-exp';
+      if (isDead(info)) return 'b-exp';
       if (info.dur === 'lifetime') return 'b-life';
       if (info.dur === '30d' || info.dur === '90d') return 'b-long';
       return 'b-short';
     }
-    function badgeText(info) {
-      if (expired(info)) return 'expired';
-      return durStr(info.dur);
-    }
-    function usesText(info) {
-      if (info.uses === -1) return '∞';
-      return info.usesLeft + '/' + info.uses;
+    function badgeText(info) { return isDead(info) ? 'dead' : durStr(info.dur); }
+    function usesText(info) { return info.uses === -1 ? '∞' : (info.usesLeft + '/' + info.uses); }
+
+    // ── AUTO CLEANUP ──
+    function autoCleanup() {
+      var keys = loadKeys();
+      var changed = false;
+      Object.keys(keys).forEach(function(k){
+        if (expired(keys[k])) { delete keys[k]; changed = true; }
+      });
+      if (changed) saveKeys(keys);
     }
 
+    // ── RENDER KEYS ──
     function renderKeys() {
       var keys = loadKeys();
+      var query = (document.getElementById('searchInp').value || '').toLowerCase();
       var list = document.getElementById('keysList');
       list.innerHTML = '';
-      var total=0, active=0, exp=0, life=0;
+      var total=0, active=0, exp=0, life=0, shown=0;
       Object.keys(keys).forEach(function(k) {
         var info = keys[k]; total++;
         if (info.dur === 'lifetime') life++;
-        if (expired(info) || (info.uses !== -1 && info.usesLeft <= 0)) exp++; else active++;
+        if (isDead(info)) exp++; else active++;
+        // filter
+        if (query && k.toLowerCase().indexOf(query) === -1 && (info.note||'').toLowerCase().indexOf(query) === -1) return;
+        shown++;
         var row = document.createElement('div');
         row.className = 'krow';
-        row.innerHTML = '<span class="kval" title="'+k+'">'+k+'</span>'
+        row.setAttribute('data-key', k);
+        var hwidBadge = info.hwid ? '<span class="badge b-short" title="'+info.hwid+'">hwid</span>' : '';
+        row.innerHTML =
+          '<input type="checkbox" class="kchk" onchange="onCheck(this)" onclick="event.stopPropagation()"/>'
+          +'<span class="kval" title="'+k+'">'+k+'</span>'
+          +(info.note ? '<span class="knote" title="'+info.note+'">'+info.note+'</span>' : '')
           +'<span class="badge '+badgeClass(info)+'">'+badgeText(info)+'</span>'
           +'<span class="badge b-uses">'+usesText(info)+'</span>'
-          +'<button class="ibtn" onclick="copyKey(\''+k+'\')">copy</button>'
+          +hwidBadge
+          +'<button class="ibtn" onclick="copyKey(\''+k+'\')">cpy</button>'
+          +'<button class="ibtn rst" onclick="resetHwid(\''+k+'\')" title="reset HWID">hwid</button>'
+          +'<button class="ibtn" onclick="openNoteModal(\''+k+'\')">note</button>'
           +'<button class="ibtn del" onclick="deleteKey(\''+k+'\')">del</button>';
         list.appendChild(row);
       });
-      if (total === 0) list.innerHTML = '<div class="empty">no keys yet</div>';
+      if (shown === 0) list.innerHTML = '<div class="empty">' + (query ? 'no matches' : 'no keys yet') + '</div>';
       document.getElementById('sTotal').textContent = total;
       document.getElementById('sActive').textContent = active;
       document.getElementById('sExpired').textContent = exp;
       document.getElementById('sLife').textContent = life;
+      document.getElementById('keyCountLabel').textContent = shown < total ? '('+shown+' shown)' : '';
     }
 
+    // ── CHECKBOX / BULK ──
+    function onCheck(cb) {
+      var row = cb.closest('.krow');
+      if (cb.checked) row.classList.add('selected'); else row.classList.remove('selected');
+    }
+    function getSelected() {
+      return Array.from(document.querySelectorAll('.krow.selected')).map(function(r){ return r.getAttribute('data-key'); });
+    }
+    function selectAll() {
+      document.querySelectorAll('.krow').forEach(function(r){
+        r.classList.add('selected');
+        r.querySelector('.kchk').checked = true;
+      });
+    }
+    function bulkDelete() {
+      var sel = getSelected();
+      if (!sel.length) return;
+      if (!confirm('Delete ' + sel.length + ' key(s)?')) return;
+      var keys = loadKeys();
+      sel.forEach(function(k){ delete keys[k]; });
+      saveKeys(keys); renderKeys();
+    }
+    function bulkResetHwid() {
+      var sel = getSelected();
+      if (!sel.length) return;
+      var keys = loadKeys();
+      sel.forEach(function(k){ if(keys[k]) keys[k].hwid = null; });
+      saveKeys(keys); renderKeys();
+    }
+
+    // ── NOTE MODAL ──
+    var currentNoteKey = null;
+    function openNoteModal(k) {
+      currentNoteKey = k;
+      var keys = loadKeys();
+      document.getElementById('noteKeyLabel').textContent = k;
+      document.getElementById('noteInput').value = (keys[k] && keys[k].note) || '';
+      document.getElementById('noteModal').classList.add('open');
+      setTimeout(function(){ document.getElementById('noteInput').focus(); }, 100);
+    }
+    function closeNoteModal() {
+      document.getElementById('noteModal').classList.remove('open');
+      currentNoteKey = null;
+    }
+    function saveNote() {
+      if (!currentNoteKey) return;
+      var keys = loadKeys();
+      if (keys[currentNoteKey]) keys[currentNoteKey].note = document.getElementById('noteInput').value.trim();
+      saveKeys(keys); closeNoteModal(); renderKeys();
+    }
+    document.getElementById('noteModal').addEventListener('click', function(e){ if(e.target===this) closeNoteModal(); });
+
+    // ── KEY ACTIONS ──
+    function deleteKey(k) { var keys = loadKeys(); delete keys[k]; saveKeys(keys); renderKeys(); }
+    function resetHwid(k) {
+      var keys = loadKeys();
+      if (keys[k]) { keys[k].hwid = null; saveKeys(keys); renderKeys(); }
+    }
+    function clearExpired() {
+      var keys = loadKeys();
+      Object.keys(keys).forEach(function(k){ if (isDead(keys[k])) delete keys[k]; });
+      saveKeys(keys); renderKeys();
+    }
+    function copyKey(k) { navigator.clipboard && navigator.clipboard.writeText(k); }
+
+    // ── GENERATOR ──
     function rand4() { return Math.random().toString(36).substring(2,6).toUpperCase().padEnd(4,'X'); }
     function makeKey(prefix) {
       var p = prefix ? prefix.toUpperCase().replace(/[^A-Z0-9]/g,'').padEnd(4,'X').substring(0,4) : rand4();
@@ -329,65 +506,77 @@
       if (isNaN(uses) || uses === 0) uses = -1;
       var count = Math.min(50, Math.max(1, parseInt(document.getElementById('countSel').value) || 1));
       var prefix = document.getElementById('prefixSel').value;
+      var note = document.getElementById('noteSel').value.trim();
       var keys = loadKeys();
       var made = [];
       for (var i = 0; i < count; i++) {
         var k; var tries = 0;
         do { k = makeKey(prefix); tries++; } while (keys[k] && tries < 200);
-        keys[k] = { dur:dur, uses:uses, usesLeft:uses, gen:'dev', created:Date.now() };
+        keys[k] = {dur:dur, uses:uses, usesLeft:uses, gen:'dev', created:Date.now(), hwid:null, note:note};
         made.push(k);
       }
-      saveKeys(keys);
-      renderKeys();
+      saveKeys(keys); renderKeys();
       var out = document.getElementById('genOut');
       out.style.display = 'block';
       out.textContent = made.join('\n');
     }
-    function deleteKey(k) { var keys = loadKeys(); delete keys[k]; saveKeys(keys); renderKeys(); }
-    function clearExpired() {
-      var keys = loadKeys();
-      Object.keys(keys).forEach(function(k){ if (expired(keys[k])) delete keys[k]; });
-      saveKeys(keys); renderKeys();
-    }
-    function copyKey(k) { navigator.clipboard && navigator.clipboard.writeText(k); }
     document.getElementById('prefixSel').addEventListener('input', function(){ this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g,''); });
+
+    // ── EXPORT ──
     function buildExportJSON() {
       var keys = loadKeys();
-      // Strip internal-only fields the Lua script doesn't need, keep what matters
-      var out = {};
-      Object.keys(keys).forEach(function(k) {
-        var v = keys[k];
-        out[k] = {
-          dur: v.dur,
-          uses: v.uses,
-          usesLeft: v.usesLeft,
-          gen: v.gen,
-          created: v.created
-        };
-      });
-      return JSON.stringify(out, null, 2);
+      return JSON.stringify(keys, null, 2);
     }
-
     function exportKeys() {
-      var json = buildExportJSON();
-      var blob = new Blob([json], { type: 'application/json' });
+      var blob = new Blob([buildExportJSON()], {type:'application/json'});
       var a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
       a.download = 'keys.json';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(a.href);
+      document.body.appendChild(a); a.click();
+      document.body.removeChild(a); URL.revokeObjectURL(a.href);
     }
-
     function previewExport() {
       var el = document.getElementById('exportPreview');
-      if (el.style.display === 'none') {
+      if (el.style.display === 'none' || !el.style.display) {
         el.style.display = 'block';
         el.textContent = buildExportJSON();
       } else {
         el.style.display = 'none';
       }
+    }
+
+    // ── WEBHOOK ──
+    function saveWebhook() {
+      var url = document.getElementById('webhookInp').value.trim();
+      localStorage.setItem('q_webhook', url);
+      document.getElementById('webhookStatus').textContent = url ? '// saved ✓' : '// cleared';
+      setTimeout(function(){ document.getElementById('webhookStatus').textContent = url ? '// webhook active' : ''; }, 2000);
+    }
+    function clearWebhook() {
+      localStorage.removeItem('q_webhook');
+      document.getElementById('webhookInp').value = '';
+      document.getElementById('webhookStatus').textContent = '// webhook cleared';
+    }
+    function testWebhook() {
+      var url = document.getElementById('webhookInp').value.trim();
+      if (!url) { document.getElementById('webhookStatus').textContent = '// no url set'; return; }
+      document.getElementById('webhookStatus').textContent = '// sending test...';
+      fetch(url, {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({
+          embeds:[{
+            title:'🔧 Webhook Test',
+            color:0x7C6BFF,
+            description:'Quantum Key System webhook is working correctly.',
+            footer:{text:'Quantum Dev Panel • by Beko & Nova'}
+          }]
+        })
+      }).then(function(r){
+        document.getElementById('webhookStatus').textContent = r.ok ? '// test sent ✓' : '// error: '+r.status;
+      }).catch(function(){
+        document.getElementById('webhookStatus').textContent = '// request failed';
+      });
     }
   </script>
 </body>
