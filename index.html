@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quantum — Key System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #080810;
+      --surface: #0e0e1a;
+      --border: rgba(255,255,255,0.07);
+      --border-hover: rgba(255,255,255,0.15);
+      --accent: #7C6BFF;
+      --accent2: #00E5C0;
+      --text: #f0f0f8;
+      --muted: #6b6b80;
+      --danger: #ff5566;
+      --success: #00E5C0;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Syne', sans-serif;
+      overflow: hidden;
+    }
+    /* Background grid */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image:
+        linear-gradient(rgba(124,107,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(124,107,255,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+    }
+    /* Glow orbs */
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .orb-1 { width: 400px; height: 400px; background: rgba(124,107,255,0.12); top: -100px; left: -100px; }
+    .orb-2 { width: 300px; height: 300px; background: rgba(0,229,192,0.08); bottom: -50px; right: -50px; }
+
+    .page { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 2rem; }
+
+    /* Top bar */
+    .topbar {
+      position: fixed; top: 0; left: 0; right: 0;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 2rem;
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+      z-index: 10;
+    }
+    .logo { font-family: 'Space Mono', monospace; font-size: 13px; font-weight: 700; color: var(--accent); letter-spacing: .1em; }
+    .logo span { color: var(--accent2); }
+    .nav-link {
+      font-size: 12px; color: var(--muted); text-decoration: none;
+      border: 1px solid var(--border); border-radius: 6px;
+      padding: 5px 12px; transition: all .2s;
+      font-family: 'Space Mono', monospace;
+    }
+    .nav-link:hover { color: var(--text); border-color: var(--border-hover); }
+
+    /* Card */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2.5rem;
+      width: 100%;
+      max-width: 400px;
+      position: relative;
+      overflow: hidden;
+    }
+    .card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), var(--accent2), transparent);
+      opacity: .6;
+    }
+
+    .lock-icon {
+      width: 52px; height: 52px;
+      margin: 0 auto 1.5rem;
+      background: rgba(124,107,255,0.1);
+      border: 1px solid rgba(124,107,255,0.2);
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .lock-icon svg { width: 24px; height: 24px; stroke: var(--accent); fill: none; stroke-width: 1.8; stroke-linecap: round; }
+
+    h1 { font-size: 22px; font-weight: 800; text-align: center; margin-bottom: 4px; }
+    .sub { font-size: 13px; color: var(--muted); text-align: center; margin-bottom: 2rem; }
+
+    .input-wrap { position: relative; margin-bottom: 1rem; }
+    .key-input {
+      width: 100%;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 16px;
+      color: var(--text);
+      font-family: 'Space Mono', monospace;
+      font-size: 15px;
+      text-align: center;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      outline: none;
+      transition: border-color .2s;
+    }
+    .key-input::placeholder { letter-spacing: 2px; color: var(--muted); font-size: 13px; }
+    .key-input:focus { border-color: rgba(124,107,255,0.5); background: rgba(124,107,255,0.04); }
+
+    #statusMsg {
+      font-size: 12px; font-family: 'Space Mono', monospace;
+      min-height: 18px; text-align: center; margin-bottom: .75rem;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      font-family: 'Syne', sans-serif;
+      font-size: 14px; font-weight: 600;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.04);
+      color: var(--text);
+      transition: all .2s;
+      letter-spacing: .05em;
+    }
+    .btn:hover { background: rgba(255,255,255,0.08); border-color: var(--border-hover); }
+    .btn:disabled { opacity: .4; cursor: not-allowed; }
+    .btn-accent {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+    .btn-accent:hover { background: #8f80ff; border-color: #8f80ff; }
+
+    .hint { font-size: 11px; color: var(--muted); text-align: center; margin-top: 1.25rem; font-family: 'Space Mono', monospace; }
+    .hint a { color: var(--accent2); text-decoration: none; }
+
+    /* Success view */
+    #successView { display: none; text-align: center; }
+    .success-glyph { font-size: 42px; margin-bottom: 1rem; }
+    .active-key-box {
+      background: rgba(0,229,192,0.05);
+      border: 1px solid rgba(0,229,192,0.2);
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-family: 'Space Mono', monospace;
+      font-size: 13px;
+      color: var(--accent2);
+      margin: 1rem 0 .5rem;
+      word-break: break-all;
+    }
+    .script-box {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      color: var(--muted);
+      text-align: left;
+      word-break: break-all;
+      margin-bottom: 1rem;
+      cursor: pointer;
+      transition: border-color .2s;
+    }
+    .script-box:hover { border-color: var(--border-hover); color: var(--text); }
+    .copy-hint { font-size: 10px; color: var(--muted); }
+
+    /* Dev link */
+    .dev-footer {
+      position: fixed; bottom: 1.5rem; right: 2rem;
+      font-family: 'Space Mono', monospace;
+      font-size: 11px; color: var(--muted);
+    }
+    .dev-footer a { color: var(--accent); text-decoration: none; }
+    .dev-footer a:hover { color: var(--accent2); }
+
+    /* Animations */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .card { animation: fadeUp .4s ease both; }
+  </style>
+</head>
+<body>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+
+  <div class="topbar">
+    <div class="logo">QUANTUM<span>.</span></div>
+    <a href="dev.html" class="nav-link">Dev panel →</a>
+  </div>
+
+  <div class="page">
+    <div class="card">
+      <div id="loginView">
+        <div class="lock-icon">
+          <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </div>
+        <h1>License Key</h1>
+        <p class="sub">Enter your key to activate Quantum</p>
+        <div class="input-wrap">
+          <input class="key-input" id="keyInput" type="text" placeholder="XXXX-XXXX-XXXX-XXXX" maxlength="19" autocomplete="off" spellcheck="false"/>
+        </div>
+        <div id="statusMsg"></div>
+        <button class="btn btn-accent" id="submitBtn" onclick="validate()">Activate</button>
+        <p class="hint">No key? Contact <a href="#">Beko</a> or <a href="#">Nova</a>.</p>
+      </div>
+
+      <div id="successView">
+        <div class="success-glyph">✓</div>
+        <h1 style="color:var(--accent2)">Activated</h1>
+        <p class="sub" style="margin-top:6px;">Your key has been accepted. Script is ready.</p>
+        <div class="active-key-box" id="activeKey"></div>
+        <div class="script-box" id="scriptBox" onclick="copyScript()" title="Click to copy"></div>
+        <p class="copy-hint" id="copyHint">click to copy script</p>
+        <button class="btn" style="margin-top:1rem;" onclick="resetView()">Use different key</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="dev-footer">by <a href="#">Beko</a> &amp; <a href="#">Nova</a></div>
+
+  <script>
+    const SCRIPT_STR = `loadstring(game:HttpGet("https://raw.githubusercontent.com/loapse/Quantum/refs/heads/main/Quantum.lua"))()`;
+
+    // Keys stored in localStorage so generator page syncs
+    function getKeys() {
+      try {
+        const raw = localStorage.getItem('quantum_keys');
+        return raw ? JSON.parse(raw) : getDefaultKeys();
+      } catch { return getDefaultKeys(); }
+    }
+    function getDefaultKeys() {
+      return {
+        "ABCD-1234-EFGH-5678": { dur: "lifetime", gen: "Nova", created: Date.now() },
+        "TEST-AAAA-BBBB-CCCC": { dur: "7d",       gen: "Beko", created: Date.now() }
+      };
+    }
+    function saveKeys(k) { localStorage.setItem('quantum_keys', JSON.stringify(k)); }
+    if (!localStorage.getItem('quantum_keys')) saveKeys(getDefaultKeys());
+
+    function isKeyValid(key) {
+      const keys = getKeys();
+      if (!keys[key]) return false;
+      const k = keys[key];
+      if (k.dur === 'lifetime') return true;
+      const days = parseInt(k.dur);
+      if (isNaN(days)) return false;
+      return Date.now() - k.created < days * 86400000;
+    }
+
+    function formatKey(v) {
+      v = v.replace(/[^A-Z0-9]/gi,'').toUpperCase();
+      return v.match(/.{1,4}/g)?.join('-').slice(0,19) || v;
+    }
+    document.getElementById('keyInput').addEventListener('input', function() {
+      this.value = formatKey(this.value);
+    });
+
+    function setStatus(msg, color) {
+      const el = document.getElementById('statusMsg');
+      el.style.color = color || 'var(--muted)';
+      el.textContent = msg;
+    }
+
+    function validate() {
+      const key = document.getElementById('keyInput').value.trim();
+      const btn = document.getElementById('submitBtn');
+      if (key.length < 19) { setStatus('// key must be 19 chars', 'var(--danger)'); return; }
+      btn.disabled = true; btn.textContent = 'Checking...';
+      setStatus('// validating...', 'var(--muted)');
+      setTimeout(() => {
+        if (isKeyValid(key)) {
+          document.getElementById('loginView').style.display = 'none';
+          document.getElementById('successView').style.display = '';
+          const info = getKeys()[key];
+          document.getElementById('activeKey').textContent = key + '  ·  ' + durLabel(info.dur);
+          document.getElementById('scriptBox').textContent = SCRIPT_STR;
+        } else {
+          setStatus('// invalid or expired key', 'var(--danger)');
+          btn.disabled = false; btn.textContent = 'Activate';
+        }
+      }, 900);
+    }
+
+    function copyScript() {
+      navigator.clipboard?.writeText(SCRIPT_STR).then(() => {
+        document.getElementById('copyHint').textContent = 'copied!';
+        setTimeout(() => document.getElementById('copyHint').textContent = 'click to copy script', 2000);
+      });
+    }
+
+    function resetView() {
+      document.getElementById('loginView').style.display = '';
+      document.getElementById('successView').style.display = 'none';
+      document.getElementById('keyInput').value = '';
+      document.getElementById('submitBtn').disabled = false;
+      document.getElementById('submitBtn').textContent = 'Activate';
+      setStatus('');
+    }
+
+    function durLabel(d) {
+      return { '1d':'1 day','3d':'3 days','7d':'7 days','30d':'30 days','90d':'90 days','lifetime':'Lifetime' }[d] || d;
+    }
+
+    document.getElementById('keyInput').addEventListener('keydown', e => { if (e.key === 'Enter') validate(); });
+  </script>
+</body>
+</html>
