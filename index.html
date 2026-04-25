@@ -98,19 +98,34 @@
       <div id="successView" style="display:none;">
         <div style="font-size:42px;text-align:center;margin-bottom:1rem;">✓</div>
         <h1 style="color:var(--accent2);">Activated</h1>
-        <p class="sub" style="margin-top:6px;">Key accepted. Script is ready.</p>
+        <p class="sub" style="margin-top:6px;">Key accepted. Copy the script below.</p>
         <div class="active-key-box" id="activeKeyBox"></div>
         <div class="uses-label" id="usesLabel"></div>
         <div class="uses-bar"><div class="uses-fill" id="usesFill"></div></div>
-        <div class="script-box" id="scriptBox" onclick="copyScript()"></div>
-        <p class="copy-hint" id="copyHint">click script to copy</p>
+        <p style="font-size:11px;color:var(--muted);font-family:'Space Mono',monospace;margin-bottom:6px;text-align:center;">// your loadstring — click to copy</p>
+        <div id="scriptBox" onclick="copyScript()" style="
+          background:rgba(0,229,192,0.06);
+          border:1px solid rgba(0,229,192,0.25);
+          border-radius:10px;
+          padding:12px 14px;
+          font-family:'Space Mono',monospace;
+          font-size:11px;
+          color:var(--accent2);
+          word-break:break-all;
+          margin-bottom:.5rem;
+          cursor:pointer;
+          transition:background .2s;
+          text-align:left;
+          user-select:all;
+        " onmouseover="this.style.background='rgba(0,229,192,0.12)'" onmouseout="this.style.background='rgba(0,229,192,0.06)'"></div>
+        <p class="copy-hint" id="copyHint" style="margin-bottom:1rem;">click to copy</p>
         <button class="btn" onclick="resetView()">Use different key</button>
       </div>
     </div>
   </div>
   <div class="dev-footer">by <a href="#">Beko</a> &amp; <a href="#">Nova</a></div>
   <script>
-    var SCRIPT = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/loapse/Quantum/refs/heads/main/Quantum.lua"))()';
+    var SCRIPT = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/loapse/quantumkee/refs/heads/main/quantumkee.lua"))()';
     function defaultKeys() {
       return {
         "ABCD-1234-EFGH-5678": { dur:"lifetime", uses:-1, usesLeft:-1, gen:"Nova", created:Date.now() },
