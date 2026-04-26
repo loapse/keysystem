@@ -8,71 +8,75 @@
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #080810; --surface: #0e0e1a;
-      --border: rgba(255,255,255,0.07); --border-h: rgba(255,255,255,0.15);
-      --accent: #7C6BFF; --accent2: #00E5C0;
-      --text: #f0f0f8; --muted: #6b6b80; --danger: #ff5566;
+      --bg:#080810;--surface:#0e0e1a;--border:rgba(255,255,255,0.07);
+      --border-h:rgba(255,255,255,0.15);--accent:#7C6BFF;--accent2:#00E5C0;
+      --text:#f0f0f8;--muted:#6b6b80;--danger:#ff5566;--warn:#FFB830;
     }
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { height: 100%; background: var(--bg); color: var(--text); font-family: 'Syne', sans-serif; }
-    body::before {
-      content: ''; position: fixed; inset: 0; pointer-events: none;
-      background-image: linear-gradient(rgba(124,107,255,0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(124,107,255,0.03) 1px, transparent 1px);
-      background-size: 40px 40px;
-    }
-    .orb { position: fixed; border-radius: 50%; filter: blur(80px); pointer-events: none; z-index: 0; }
-    .orb1 { width: 400px; height: 400px; background: rgba(124,107,255,0.12); top: -100px; left: -100px; }
-    .orb2 { width: 300px; height: 300px; background: rgba(0,229,192,0.08); bottom: -50px; right: -50px; }
-    .topbar {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 10;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 1rem 2rem; border-bottom: 1px solid var(--border); backdrop-filter: blur(12px);
-    }
-    .logo { font-family: 'Space Mono', monospace; font-size: 13px; font-weight: 700; color: var(--accent); letter-spacing: .1em; }
-    .logo span { color: var(--accent2); }
-    .nav-link { font-size: 12px; color: var(--muted); text-decoration: none; border: 1px solid var(--border); border-radius: 6px; padding: 5px 12px; font-family: 'Space Mono', monospace; transition: all .2s; }
-    .nav-link:hover { color: var(--text); border-color: var(--border-h); }
-    .page { position: relative; z-index: 1; display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 2rem; }
-    .card {
-      background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
-      padding: 2.5rem; width: 100%; max-width: 400px; position: relative; overflow: hidden;
-      animation: fadeUp .4s ease both;
-    }
-    .card::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
-      background: linear-gradient(90deg, transparent, var(--accent), var(--accent2), transparent); opacity: .6;
-    }
-    .lock-icon { width: 52px; height: 52px; margin: 0 auto 1.5rem; background: rgba(124,107,255,0.1); border: 1px solid rgba(124,107,255,0.2); border-radius: 14px; display: flex; align-items: center; justify-content: center; }
-    .lock-icon svg { width: 24px; height: 24px; stroke: var(--accent); fill: none; stroke-width: 1.8; stroke-linecap: round; }
-    h1 { font-size: 22px; font-weight: 800; text-align: center; margin-bottom: 4px; }
-    .sub { font-size: 13px; color: var(--muted); text-align: center; margin-bottom: 2rem; }
-    .key-input {
-      display: block; width: 100%; background: rgba(255,255,255,0.03); border: 1px solid var(--border);
-      border-radius: 10px; padding: 12px 16px; color: var(--text); font-family: 'Space Mono', monospace;
-      font-size: 15px; text-align: center; letter-spacing: 3px; text-transform: uppercase;
-      outline: none; transition: border-color .2s; margin-bottom: 1rem;
-    }
-    .key-input::placeholder { letter-spacing: 2px; color: var(--muted); font-size: 13px; }
-    .key-input:focus { border-color: rgba(124,107,255,0.5); background: rgba(124,107,255,0.04); }
-    #statusMsg { font-size: 12px; font-family: 'Space Mono', monospace; min-height: 20px; text-align: center; margin-bottom: .75rem; }
-    .btn { display: block; width: 100%; padding: 12px; border-radius: 10px; font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; border: 1px solid var(--border); background: rgba(255,255,255,0.04); color: var(--text); transition: all .2s; }
-    .btn:hover { background: rgba(255,255,255,0.08); border-color: var(--border-h); }
-    .btn:disabled { opacity: .4; cursor: not-allowed; }
-    .btn-accent { background: var(--accent); border-color: var(--accent); color: #fff; }
-    .btn-accent:hover { background: #8f80ff; border-color: #8f80ff; }
-    .hint { font-size: 11px; color: var(--muted); text-align: center; margin-top: 1.25rem; font-family: 'Space Mono', monospace; }
-    .hint a { color: var(--accent2); text-decoration: none; }
-    .active-key-box { background: rgba(0,229,192,0.05); border: 1px solid rgba(0,229,192,0.2); border-radius: 10px; padding: 10px 14px; font-family: 'Space Mono', monospace; font-size: 12px; color: var(--accent2); margin: 1rem 0 .75rem; word-break: break-all; text-align: center; }
-    .uses-label { font-size: 11px; color: var(--muted); font-family: 'Space Mono', monospace; margin-bottom: 5px; text-align: center; }
-    .uses-bar { height: 4px; background: rgba(255,255,255,0.07); border-radius: 2px; overflow: hidden; margin-bottom: 1rem; }
-    .uses-fill { height: 100%; background: var(--accent2); border-radius: 2px; transition: width .4s; }
-    .script-box { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 10px; padding: 10px 14px; font-family: 'Space Mono', monospace; font-size: 10px; color: var(--muted); word-break: break-all; margin-bottom: .5rem; cursor: pointer; transition: border-color .2s; }
-    .script-box:hover { border-color: var(--border-h); color: var(--text); }
-    .copy-hint { font-size: 10px; color: var(--muted); text-align: center; font-family: 'Space Mono', monospace; margin-bottom: 1rem; }
-    .dev-footer { position: fixed; bottom: 1.5rem; right: 2rem; font-family: 'Space Mono', monospace; font-size: 11px; color: var(--muted); }
-    .dev-footer a { color: var(--accent); text-decoration: none; }
-    @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;}
+    body::before{content:'';position:fixed;inset:0;pointer-events:none;
+      background-image:linear-gradient(rgba(124,107,255,0.03) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(124,107,255,0.03) 1px,transparent 1px);
+      background-size:40px 40px;}
+    .orb{position:fixed;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0;}
+    .orb1{width:400px;height:400px;background:rgba(124,107,255,0.12);top:-100px;left:-100px;}
+    .orb2{width:300px;height:300px;background:rgba(0,229,192,0.08);bottom:-50px;right:-50px;}
+    .topbar{position:fixed;top:0;left:0;right:0;z-index:10;display:flex;align-items:center;
+      justify-content:space-between;padding:1rem 2rem;border-bottom:1px solid var(--border);backdrop-filter:blur(12px);}
+    .logo{font-family:'Space Mono',monospace;font-size:13px;font-weight:700;color:var(--accent);letter-spacing:.1em;}
+    .logo span{color:var(--accent2);}
+    .nav-link{font-size:12px;color:var(--muted);text-decoration:none;border:1px solid var(--border);
+      border-radius:6px;padding:5px 12px;font-family:'Space Mono',monospace;transition:all .2s;}
+    .nav-link:hover{color:var(--text);border-color:var(--border-h);}
+    .page{position:relative;z-index:1;display:flex;align-items:center;justify-content:center;min-height:100vh;padding:5rem 2rem 2rem;}
+    .card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:2.5rem;
+      width:100%;max-width:420px;position:relative;overflow:hidden;animation:fadeUp .4s ease both;}
+    .card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
+      background:linear-gradient(90deg,transparent,var(--accent),var(--accent2),transparent);opacity:.6;}
+    .lock-icon{width:52px;height:52px;margin:0 auto 1.5rem;background:rgba(124,107,255,0.1);
+      border:1px solid rgba(124,107,255,0.2);border-radius:14px;display:flex;align-items:center;justify-content:center;}
+    .lock-icon svg{width:24px;height:24px;stroke:var(--accent);fill:none;stroke-width:1.8;stroke-linecap:round;}
+    h1{font-size:22px;font-weight:800;text-align:center;margin-bottom:4px;}
+    .sub{font-size:13px;color:var(--muted);text-align:center;margin-bottom:2rem;}
+    .key-input{display:block;width:100%;background:rgba(255,255,255,0.03);border:1px solid var(--border);
+      border-radius:10px;padding:12px 16px;color:var(--text);font-family:'Space Mono',monospace;
+      font-size:15px;text-align:center;letter-spacing:3px;text-transform:uppercase;outline:none;
+      transition:border-color .2s;margin-bottom:1rem;}
+    .key-input::placeholder{letter-spacing:2px;color:var(--muted);font-size:13px;}
+    .key-input:focus{border-color:rgba(124,107,255,0.5);background:rgba(124,107,255,0.04);}
+    #statusMsg{font-size:12px;font-family:'Space Mono',monospace;min-height:20px;text-align:center;margin-bottom:.75rem;}
+    .btn{display:block;width:100%;padding:12px;border-radius:10px;font-family:'Syne',sans-serif;
+      font-size:14px;font-weight:600;cursor:pointer;border:1px solid var(--border);
+      background:rgba(255,255,255,0.04);color:var(--text);transition:all .2s;}
+    .btn:hover{background:rgba(255,255,255,0.08);border-color:var(--border-h);}
+    .btn:disabled{opacity:.4;cursor:not-allowed;}
+    .btn-accent{background:var(--accent);border-color:var(--accent);color:#fff;}
+    .btn-accent:hover{background:#8f80ff;border-color:#8f80ff;}
+    .hint{font-size:11px;color:var(--muted);text-align:center;margin-top:1.25rem;font-family:'Space Mono',monospace;}
+    .hint a{color:var(--accent2);text-decoration:none;}
+
+    /* success */
+    .active-key-box{background:rgba(0,229,192,0.05);border:1px solid rgba(0,229,192,0.2);border-radius:10px;
+      padding:10px 14px;font-family:'Space Mono',monospace;font-size:12px;color:var(--accent2);
+      margin:1rem 0 .5rem;word-break:break-all;text-align:center;}
+    .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:.75rem;}
+    .info-box{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:8px;padding:8px 10px;}
+    .info-label{font-size:10px;color:var(--muted);font-family:'Space Mono',monospace;margin-bottom:3px;}
+    .info-val{font-size:13px;font-weight:700;font-family:'Space Mono',monospace;}
+    .uses-bar{height:4px;background:rgba(255,255,255,0.07);border-radius:2px;overflow:hidden;margin-bottom:1rem;}
+    .uses-fill{height:100%;background:var(--accent2);border-radius:2px;transition:width .4s;}
+    .script-reveal{background:rgba(0,229,192,0.06);border:1px solid rgba(0,229,192,0.25);border-radius:10px;
+      padding:12px 14px;font-family:'Space Mono',monospace;font-size:11px;color:var(--accent2);
+      word-break:break-all;margin-bottom:.5rem;cursor:pointer;transition:background .2s;user-select:all;}
+    .script-reveal:hover{background:rgba(0,229,192,0.12);}
+    .copy-hint{font-size:10px;color:var(--muted);text-align:center;font-family:'Space Mono',monospace;margin-bottom:1rem;}
+    .countdown-box{display:flex;align-items:center;gap:6px;justify-content:center;
+      font-family:'Space Mono',monospace;font-size:11px;color:var(--warn);margin-bottom:.75rem;}
+    .hwid-box{font-size:10px;color:var(--muted);font-family:'Space Mono',monospace;text-align:center;margin-top:.5rem;word-break:break-all;}
+
+    .dev-footer{position:fixed;bottom:1.5rem;right:2rem;font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);}
+    .dev-footer a{color:var(--accent);text-decoration:none;}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
   </style>
 </head>
 <body>
@@ -84,6 +88,8 @@
   </div>
   <div class="page">
     <div class="card">
+
+      <!-- LOGIN -->
       <div id="loginView">
         <div class="lock-icon">
           <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
@@ -95,41 +101,75 @@
         <button class="btn btn-accent" id="submitBtn" onclick="validate()">Activate</button>
         <p class="hint">No key? Contact <a href="#">Beko</a> or <a href="#">Nova</a>.</p>
       </div>
+
+      <!-- SUCCESS -->
       <div id="successView" style="display:none;">
-        <div style="font-size:42px;text-align:center;margin-bottom:1rem;">✓</div>
+        <div style="font-size:38px;text-align:center;margin-bottom:.75rem;">✓</div>
         <h1 style="color:var(--accent2);">Activated</h1>
-        <p class="sub" style="margin-top:6px;">Key accepted. Copy the script below.</p>
+        <p class="sub" style="margin-top:4px;">Key accepted. Copy the script below into your executor.</p>
         <div class="active-key-box" id="activeKeyBox"></div>
-        <div class="uses-label" id="usesLabel"></div>
+        <div class="info-grid">
+          <div class="info-box">
+            <div class="info-label">duration</div>
+            <div class="info-val" id="infoDur">—</div>
+          </div>
+          <div class="info-box">
+            <div class="info-label">uses left</div>
+            <div class="info-val" id="infoUses">—</div>
+          </div>
+          <div class="info-box" id="expiryBox">
+            <div class="info-label">expires in</div>
+            <div class="info-val" id="infoExpiry" style="color:var(--warn);">—</div>
+          </div>
+          <div class="info-box">
+            <div class="info-label">hwid locked</div>
+            <div class="info-val" id="infoHwid" style="color:var(--accent2);">yes</div>
+          </div>
+        </div>
         <div class="uses-bar"><div class="uses-fill" id="usesFill"></div></div>
-        <p style="font-size:11px;color:var(--muted);font-family:'Space Mono',monospace;margin-bottom:6px;text-align:center;">// your loadstring — click to copy</p>
-        <div id="scriptBox" onclick="copyScript()" style="
-          background:rgba(0,229,192,0.06);
-          border:1px solid rgba(0,229,192,0.25);
-          border-radius:10px;
-          padding:12px 14px;
-          font-family:'Space Mono',monospace;
-          font-size:11px;
-          color:var(--accent2);
-          word-break:break-all;
-          margin-bottom:.5rem;
-          cursor:pointer;
-          transition:background .2s;
-          text-align:left;
-          user-select:all;
-        " onmouseover="this.style.background='rgba(0,229,192,0.12)'" onmouseout="this.style.background='rgba(0,229,192,0.06)'"></div>
-        <p class="copy-hint" id="copyHint" style="margin-bottom:1rem;">click to copy</p>
+        <p style="font-size:11px;color:var(--muted);font-family:'Space Mono',monospace;margin-bottom:6px;text-align:center;">// loadstring — click to copy</p>
+        <div class="script-reveal" id="scriptBox" onclick="copyScript()"></div>
+        <p class="copy-hint" id="copyHint">click to copy</p>
         <button class="btn" onclick="resetView()">Use different key</button>
+        <div class="hwid-box" id="hwidDisplay"></div>
       </div>
+
     </div>
   </div>
   <div class="dev-footer">by <a href="#">Beko</a> &amp; <a href="#">Nova</a></div>
+
   <script>
     var SCRIPT = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/loapse/quantumkee/refs/heads/main/quantumkee.lua"))()';
+    // Discord webhook — paste your webhook URL here (leave blank to disable)
+    var WEBHOOK = '';
+
+    // ── HWID fingerprint (browser-based) ──
+    function getHWID() {
+      var cached = localStorage.getItem('q_hwid');
+      if (cached) return cached;
+      var nav = navigator;
+      var raw = [
+        nav.userAgent, nav.language, nav.platform,
+        screen.width + 'x' + screen.height + 'x' + screen.colorDepth,
+        nav.hardwareConcurrency || 0,
+        new Date().getTimezoneOffset()
+      ].join('|');
+      // simple djb2 hash
+      var hash = 5381;
+      for (var i = 0; i < raw.length; i++) {
+        hash = ((hash << 5) + hash) ^ raw.charCodeAt(i);
+        hash = hash & 0x7fffffff;
+      }
+      var hwid = 'HW-' + hash.toString(16).toUpperCase().padStart(8,'0');
+      localStorage.setItem('q_hwid', hwid);
+      return hwid;
+    }
+
+    // ── KEY STORE ──
     function defaultKeys() {
       return {
-        "ABCD-1234-EFGH-5678": { dur:"lifetime", uses:-1, usesLeft:-1, gen:"Nova", created:Date.now() },
-        "TEST-AAAA-BBBB-CCCC": { dur:"7d", uses:3, usesLeft:3, gen:"Beko", created:Date.now() }
+        'ABCD-1234-EFGH-5678': {dur:'lifetime',uses:-1,usesLeft:-1,gen:'Nova',created:Date.now(),hwid:null,note:''},
+        'TEST-AAAA-BBBB-CCCC': {dur:'7d',uses:3,usesLeft:3,gen:'Beko',created:Date.now(),hwid:null,note:''}
       };
     }
     function loadKeys() {
@@ -143,14 +183,35 @@
       var d = parseInt(info.dur);
       return isNaN(d) ? false : Date.now() - info.created > d * 86400000;
     }
+    function msLeft(info) {
+      if (info.dur === 'lifetime') return Infinity;
+      var d = parseInt(info.dur);
+      if (isNaN(d)) return 0;
+      return Math.max(0, (info.created + d * 86400000) - Date.now());
+    }
+    function formatCountdown(ms) {
+      if (ms === Infinity) return 'never';
+      var s = Math.floor(ms/1000), m = Math.floor(s/60), h = Math.floor(m/60), days = Math.floor(h/24);
+      h %= 24; m %= 60; s %= 60;
+      if (days > 1) return days + 'd ' + h + 'h';
+      return h + 'h ' + m + 'm ' + s + 's';
+    }
     function durStr(d) {
-      return {  '1d':'1 day','3d':'3 days','7d':'7 days','30d':'30 days','90d':'90 days','lifetime':'Lifetime' }[d] || d;
+      return {'1d':'1 day','3d':'3 days','7d':'7 days','30d':'30 days','90d':'90 days','lifetime':'Lifetime'}[d] || d;
     }
     function fmtKey(v) {
       v = v.replace(/[^A-Z0-9]/gi,'').toUpperCase();
       var m = v.match(/.{1,4}/g);
       return m ? m.join('-').slice(0,19) : v;
     }
+
+    // ── RATE LIMIT (cooldown) ──
+    var lastAttempt = 0;
+    var attemptCount = 0;
+    var COOLDOWN_MS = 3000;
+    var MAX_ATTEMPTS = 5;
+    var LOCKOUT_MS = 30000;
+
     document.getElementById('keyInput').addEventListener('input', function(){ this.value = fmtKey(this.value); });
     document.getElementById('keyInput').addEventListener('keydown', function(e){ if(e.key==='Enter') validate(); });
 
@@ -159,44 +220,138 @@
       el.style.color = color || 'var(--muted)';
       el.textContent = msg;
     }
+
+    // ── DISCORD WEBHOOK ──
+    function notifyWebhook(key, hwid, status) {
+      if (!WEBHOOK) return;
+      var payload = {
+        embeds: [{
+          title: status === 'success' ? '✅ Key Activated' : '❌ Failed Activation',
+          color: status === 'success' ? 0x00E5C0 : 0xff5566,
+          fields: [
+            { name: 'Key', value: '`' + key + '`', inline: true },
+            { name: 'HWID', value: '`' + hwid + '`', inline: true },
+            { name: 'Time', value: new Date().toUTCString(), inline: false }
+          ],
+          footer: { text: 'Quantum Key System • by Beko & Nova' }
+        }]
+      };
+      fetch(WEBHOOK, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      }).catch(function(){});
+    }
+
+    // ── VALIDATE ──
+    var countdownInterval = null;
     function validate() {
+      var now = Date.now();
+      // cooldown
+      if (now - lastAttempt < COOLDOWN_MS) {
+        setStatus('// slow down...', 'var(--warn)'); return;
+      }
+      // lockout after too many attempts
+      if (attemptCount >= MAX_ATTEMPTS) {
+        var wait = Math.ceil((LOCKOUT_MS - (now - lastAttempt)) / 1000);
+        if (wait > 0) { setStatus('// too many attempts. wait ' + wait + 's', 'var(--danger)'); return; }
+        else { attemptCount = 0; }
+      }
+      lastAttempt = now;
+      attemptCount++;
+
       var key = document.getElementById('keyInput').value.trim();
       var btn = document.getElementById('submitBtn');
       if (key.length < 19) { setStatus('// key must be 19 chars', 'var(--danger)'); return; }
+
       btn.disabled = true; btn.textContent = 'Checking...';
       setStatus('// validating...', 'var(--muted)');
+
       setTimeout(function() {
         var keys = loadKeys();
         var info = keys[key];
-        if (!info) { setStatus('// invalid key', 'var(--danger)'); btn.disabled=false; btn.textContent='Activate'; return; }
-        if (expired(info)) { setStatus('// key expired', 'var(--danger)'); btn.disabled=false; btn.textContent='Activate'; return; }
-        if (info.uses !== -1 && info.usesLeft <= 0) { setStatus('// no uses remaining', 'var(--danger)'); btn.disabled=false; btn.textContent='Activate'; return; }
-        // consume a use
-        if (info.uses !== -1) { keys[key].usesLeft = Math.max(0, info.usesLeft - 1); saveKeys(keys); info = keys[key]; }
-        // show success
-        document.getElementById('loginView').style.display = 'none';
-        document.getElementById('successView').style.display = 'block';
-        document.getElementById('activeKeyBox').textContent = key + '  ·  ' + durStr(info.dur);
-        document.getElementById('scriptBox').textContent = SCRIPT;
-        if (info.uses === -1) {
-          document.getElementById('usesLabel').textContent = 'unlimited uses';
-          document.getElementById('usesFill').style.width = '100%';
-          document.getElementById('usesFill').style.background = 'var(--accent2)';
-        } else {
-          var pct = (info.usesLeft / info.uses) * 100;
-          document.getElementById('usesLabel').textContent = info.usesLeft + ' of ' + info.uses + ' uses remaining';
-          document.getElementById('usesFill').style.width = Math.max(0,pct) + '%';
-          document.getElementById('usesFill').style.background = pct < 30 ? 'var(--danger)' : 'var(--accent2)';
+        var hwid = getHWID();
+
+        if (!info) {
+          setStatus('// invalid key', 'var(--danger)');
+          notifyWebhook(key, hwid, 'fail');
+          btn.disabled=false; btn.textContent='Activate'; return;
         }
+        if (expired(info)) {
+          setStatus('// key expired', 'var(--danger)');
+          notifyWebhook(key, hwid, 'fail');
+          btn.disabled=false; btn.textContent='Activate'; return;
+        }
+        if (info.uses !== -1 && info.usesLeft <= 0) {
+          setStatus('// no uses remaining', 'var(--danger)');
+          notifyWebhook(key, hwid, 'fail');
+          btn.disabled=false; btn.textContent='Activate'; return;
+        }
+        // HWID check — bind on first use
+        if (info.hwid && info.hwid !== hwid) {
+          setStatus('// hwid mismatch — key is locked to another device', 'var(--danger)');
+          notifyWebhook(key, hwid, 'fail');
+          btn.disabled=false; btn.textContent='Activate'; return;
+        }
+        // bind HWID on first use
+        if (!info.hwid) { keys[key].hwid = hwid; }
+        // consume use
+        if (info.uses !== -1) { keys[key].usesLeft = Math.max(0, info.usesLeft - 1); }
+        saveKeys(keys);
+        info = keys[key];
+
+        notifyWebhook(key, hwid, 'success');
+        attemptCount = 0;
+        showSuccess(key, info, hwid);
       }, 900);
     }
+
+    function showSuccess(key, info, hwid) {
+      document.getElementById('loginView').style.display = 'none';
+      document.getElementById('successView').style.display = 'block';
+      document.getElementById('activeKeyBox').textContent = key;
+      document.getElementById('scriptBox').textContent = SCRIPT;
+      document.getElementById('infoDur').textContent = durStr(info.dur);
+      document.getElementById('hwidDisplay').textContent = '// hwid: ' + hwid;
+      document.getElementById('infoHwid').textContent = info.hwid ? 'locked' : 'bound now';
+
+      if (info.uses === -1) {
+        document.getElementById('infoUses').textContent = '∞';
+        document.getElementById('usesFill').style.width = '100%';
+        document.getElementById('usesFill').style.background = 'var(--accent2)';
+      } else {
+        document.getElementById('infoUses').textContent = info.usesLeft + ' / ' + info.uses;
+        var pct = (info.usesLeft / info.uses) * 100;
+        document.getElementById('usesFill').style.width = Math.max(0,pct) + '%';
+        document.getElementById('usesFill').style.background = pct < 30 ? 'var(--danger)' : 'var(--accent2)';
+      }
+
+      // expiry countdown
+      if (countdownInterval) clearInterval(countdownInterval);
+      if (info.dur === 'lifetime') {
+        document.getElementById('infoExpiry').textContent = 'never';
+        document.getElementById('infoExpiry').style.color = 'var(--accent2)';
+      } else {
+        function tick() {
+          var ms = msLeft(info);
+          var el = document.getElementById('infoExpiry');
+          if (!el) { clearInterval(countdownInterval); return; }
+          el.textContent = formatCountdown(ms);
+          el.style.color = ms < 3600000 ? 'var(--danger)' : 'var(--warn)';
+        }
+        tick();
+        countdownInterval = setInterval(tick, 1000);
+      }
+    }
+
     function copyScript() {
       navigator.clipboard.writeText(SCRIPT).then(function(){
         document.getElementById('copyHint').textContent = '// copied!';
-        setTimeout(function(){ document.getElementById('copyHint').textContent = 'click script to copy'; }, 2000);
+        setTimeout(function(){ document.getElementById('copyHint').textContent = 'click to copy'; }, 2000);
       });
     }
     function resetView() {
+      if (countdownInterval) { clearInterval(countdownInterval); countdownInterval = null; }
       document.getElementById('loginView').style.display = 'block';
       document.getElementById('successView').style.display = 'none';
       document.getElementById('keyInput').value = '';
